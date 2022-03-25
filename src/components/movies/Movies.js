@@ -5,82 +5,50 @@ import MovieService from '../../services/MovieService'
 import { useState, useEffect } from 'react'
 
 const Movies = () => {
-    const [movie, setMovie] = useState({})
 
-    const movieService = new MovieService({})
+    const [moviesList, setMoviesList] = useState([])  
+
+    const movieService = new MovieService()
+
     const updateState = () => {
-        movieService.getMovie(Math.random() * (996 - 2) + 2)
-            .then((res) => {setMovie(res)})  
+        movieService.getMovies(1)
+            .then((res) => {setMoviesList(res)})  
     }
+
     useEffect(() => {
         updateState();
     }, [])
-    const {poster, rating, title, genre, year} = movie
+
+    const renderItems = (arr) => {
+        const items = arr.map((item) => {
+            const {poster, rating, title, year} = item
+
+            return (
+                <Link to="movieInfo">
+                    <div className="movieCard">
+                        <div className="movieImage">
+                            <img src={poster} alt="poster" />
+                            <div className="rating">{rating}</div>
+                        </div>
+                        <h4>{title}</h4>
+                        <p>{year} </p>
+                    </div>
+                </Link>
+
+            )
+        })
+        return (
+            <>
+            {items}
+            </>
+        )
+    }
+    const content = renderItems(moviesList)
     return(
         <div className="moviesContainer">
             <h2>Movies</h2>
             <div className="container">
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{genre}, {year} </p>
-                    </div>
-                </Link>
-
+            {content}
 
             </div>
             <button type="button" class="btn btn-danger">Load more</button>

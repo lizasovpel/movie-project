@@ -10,17 +10,23 @@ class MovieService {
         }
         return await res.json()
     }
-    getMovies = (page) => {
-        return this.getData(`${this._apiBase}/3/movie/popular?${this._apiKey}&language=en-US&page=${page}`)
+
+    getMovies = async(page) => {
+        const res = await this.getData(`${this._apiBase}/3/movie/popular?${this._apiKey}&language=en-US&page=${page}`)  
+        return res.results.map(item => this._transformMovieData(item))
+        
     }
+
     getMovie = async(id) => { 
         const res = await this.getData(`${this._apiBase}/3/movie/${id}?${this._apiKey}&language=en-US`)
-        return this._transformData(res)
+        return this._transformMovieData(res)
     }
-    _transformData = (res) => {
+
+
+    _transformMovieData = (res) => {
         return {
             title: res.title,
-            genre: res.genres.map(genre => genre.name).join(', '),
+            genre: res.genre_ids,
             rating: res.vote_average,
             year: res.release_date.slice(0,4),
             poster: `https://image.tmdb.org/t/p/original${res.poster_path}`,
