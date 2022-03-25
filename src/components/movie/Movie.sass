@@ -1,0 +1,31 @@
+@import '../../style/variables'
+
+.movieContainer 
+    margin-top: 150px
+    margin-bottom: 50px
+    width: 100%
+    color: $white_
+
+    .cont
+        margin-top: 30px
+        width: 100%
+        display: grid
+        grid-template-columns: 1fr 2fr
+        @media all and (max-width: 800px)
+            grid-template-columns: 1fr
+
+        .poster img
+            width: 100%
+        .info
+            padding-left: 20px
+            text-align: justify
+            @media all and (max-width: 800px)
+                margin-top: 20px
+                padding-left: 0
+                margin-bottom: 50px
+
+            
+            .extraInfo > *
+                margin: 0
+            
+    

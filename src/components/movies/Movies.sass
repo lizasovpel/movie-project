@@ -1,0 +1,47 @@
+@import '../../style/variables'
+.moviesContainer
+    padding: 0  
+    *
+        color: white
+    .container
+        padding: 20px 0
+        display: grid
+        grid-template-columns: 1fr 1fr 1fr
+        grid-column-gap: 40px
+        @media all and (max-width: 1200px)
+            grid-template-columns: 1fr 1fr
+        @media all and (max-width: 800px)
+            grid-template-columns: 1fr
+        .movieCard
+            margin: 10px 0
+            :hover
+                cursor: pointer
+            h4, p
+                color: $white_
+            .movieImage
+                margin-bottom: 10px
+                position: relative
+                img
+                    width: 100%
+                .rating
+                    position: absolute
+                    top: 20px
+                    right: 0
+                    width: 50px
+                    background-color: black
+                    text-align: center
+                    padding: 5px 0 
+    button
+        display: block
+        padding: 10px 30px
+        margin: 20px auto 50px auto
+        font-size: larger
+
+            
+
+
+            
+
+
+
+        

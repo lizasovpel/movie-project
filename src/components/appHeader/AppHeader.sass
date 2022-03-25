@@ -1,0 +1,53 @@
+@import '../../../src/style/variables'
+
+header
+    padding: 20px 200px
+    display: flex
+    justify-content: space-between
+    height: 100px
+    position: fixed
+    top: 0
+    right: 0
+    left: 0
+    z-index: 100
+    background-color: $dark
+    width: 100%
+    @media all and (max-width: 1200px)
+        padding: 20px 100px
+    @media all and (max-width: 800px)
+        padding: 20px
+        width: 100vw
+
+    h1
+        color: $red_    
+        margin-top: 15px
+
+
+
+
+    .right 
+        display: flex
+        height: 40px
+        margin: 10px 0
+
+        .searchInput 
+            display: flex
+        img
+            height: 30px
+            margin-top: 5px
+            :hover
+                cursor: pointer
+
+            >*
+                display: block
+
+        .loginBtn
+            margin-left: 20px
+
+            button
+                display: block
+                height: 100%
+                background-color: $red_
+                color: white
+
+        
