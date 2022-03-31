@@ -1,58 +1,59 @@
-import './Movies.sass'
-import { Link } from 'react-router-dom'
-import bg from '../../img/poster.jpeg'
-import MovieService from '../../services/MovieService'
-import { useState, useEffect } from 'react'
+import "./Movies.sass";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { moviesFetched, moviesFetching } from "../../actions";
+import { moviesFetchingError } from "../../actions";
+import Spinner from "../spinner/Spinner";
+import { useHttp } from "../../hooks/http.hook";
 
 const Movies = () => {
+	const { movies, moviesLoadingStatus } = useSelector((state) => state);
+	const dispatch = useDispatch();
+	const { request } = useHttp();
+	const _apiBase = "https://api.themoviedb.org";
+	const page = 1;
 
-    const [moviesList, setMoviesList] = useState([])  
+	useEffect(() => {
+		dispatch(moviesFetching());
+		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_apiKey}&language=en-US&page=${page}`)
+			.then((data) => dispatch(moviesFetched(data)))
+			.catch(() => dispatch(moviesFetchingError()));
+		// eslint-disable-next-line
+	}, []);
 
-    const movieService = new MovieService()
+	if (moviesLoadingStatus === "loading") {
+		return <Spinner />;
+	} else if (moviesLoadingStatus === "error") {
+		return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
+	}
 
-    const updateState = () => {
-        movieService.getMovies(1)
-            .then((res) => {setMoviesList(res)})  
-    }
+	const renderMoviesList = (movies) => {
+		return movies.map(({ id, title, release_date, vote_average, poster_path }) => {
+			return (
+				<Link to="movieInfo" key={id}>
+					<div className="movieCard">
+						<div className="movieImage">
+							<img src={`https://image.tmdb.org/t/p/original${poster_path}`} alt="poster" />
+							<div className="rating">{vote_average}</div>
+						</div>
+						<h4>{title}</h4>
+						<p>{release_date.slice(0, 4)}</p>
+					</div>
+				</Link>
+			);
+		});
+	};
 
-    useEffect(() => {
-        updateState();
-    }, [])
-
-    const renderItems = (arr) => {
-        const items = arr.map((item) => {
-            const {poster, rating, title, year} = item
-
-            return (
-                <Link to="movieInfo">
-                    <div className="movieCard">
-                        <div className="movieImage">
-                            <img src={poster} alt="poster" />
-                            <div className="rating">{rating}</div>
-                        </div>
-                        <h4>{title}</h4>
-                        <p>{year} </p>
-                    </div>
-                </Link>
-
-            )
-        })
-        return (
-            <>
-            {items}
-            </>
-        )
-    }
-    const content = renderItems(moviesList)
-    return(
-        <div className="moviesContainer">
-            <h2>Movies</h2>
-            <div className="container">
-            {content}
-
-            </div>
-            <button type="button" class="btn btn-danger">Load more</button>
-        </div>
-    )
-}
-export default Movies
+	const elements = renderMoviesList(movies);
+	return (
+		<div className="moviesContainer">
+			<h2>Movies</h2>
+			<div className="container">{elements}</div>
+			<button type="button" className="btn btn-danger">
+				Load more
+			</button>
+		</div>
+	);
+};
+export default Movies;
