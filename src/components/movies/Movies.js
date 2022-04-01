@@ -16,7 +16,7 @@ const Movies = () => {
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_apiKey}&language=en-US&page=${page}`)
+		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 		// eslint-disable-next-line
@@ -56,4 +56,5 @@ const Movies = () => {
 		</div>
 	);
 };
+
 export default Movies;
