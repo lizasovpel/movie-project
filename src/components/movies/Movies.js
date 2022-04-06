@@ -27,13 +27,13 @@ const Movies = () => {
 	} else if (moviesLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
 	}
-
+	console.log(movies);
 	const renderMoviesList = (movies) => {
 		return movies.map(({ id, title, release_date, vote_average, poster_path }) => {
 			return (
 				<Link to="movieInfo" key={id}>
 					<div className="movieCard">
-						<div className="movieImage">
+						<div className="movieImage" data-proportion-h="2">
 							<img src={`https://image.tmdb.org/t/p/original${poster_path}`} alt="poster" />
 							<div className="rating">{vote_average}</div>
 						</div>
