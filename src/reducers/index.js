@@ -39,6 +39,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				genresLoadingStatus: "error",
 			};
+		case "ACTIVE_GENRE_CHANGED":
+			return {
+				...state,
+				activeGenre: action.payload,
+			};
 
 		default:
 			return state;
