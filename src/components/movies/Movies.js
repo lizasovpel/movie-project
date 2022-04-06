@@ -8,11 +8,10 @@ import Spinner from "../spinner/Spinner";
 import { useHttp } from "../../hooks/http.hook";
 
 const Movies = () => {
-	const { movies, moviesLoadingStatus } = useSelector((state) => state);
+	const { movies, moviesLoadingStatus, page } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
 	const _apiBase = "https://api.themoviedb.org";
-	const page = 1;
 
 	useEffect(() => {
 		dispatch(moviesFetching());
