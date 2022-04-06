@@ -8,10 +8,9 @@ import Spinner from "../spinner/Spinner";
 import { useHttp } from "../../hooks/http.hook";
 
 const Movies = () => {
-	const { movies, moviesLoadingStatus, activeGenre } = useSelector((state) => state);
+	const { movies, moviesLoadingStatus, activeGenre, page } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
-	const page = 1;
 
 	useEffect(() => {
 		dispatch(moviesFetching());
@@ -25,7 +24,7 @@ const Movies = () => {
 		if (activeGenre !== "all") {
 			dispatch(moviesFetching());
 			request(
-				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=${activeGenre}`
+				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&${page}&with_genres=${activeGenre}`
 			)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));

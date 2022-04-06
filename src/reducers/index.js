@@ -4,6 +4,7 @@ const initialState = {
 	genres: [],
 	genresLoadingStatus: "idle",
 	activeGenre: "all",
+	page: 1,
 };
 
 const reducer = (state = initialState, action) => {
