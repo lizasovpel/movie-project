@@ -11,12 +11,11 @@ const Movies = () => {
 	const { movies, moviesLoadingStatus } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
-	const _apiBase = "https://api.themoviedb.org";
 	const page = 1;
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 		// eslint-disable-next-line
@@ -25,7 +24,7 @@ const Movies = () => {
 	if (moviesLoadingStatus === "loading") {
 		return <Spinner />;
 	} else if (moviesLoadingStatus === "error") {
-		return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
+		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
 	console.log(movies);
 	const renderMoviesList = (movies) => {

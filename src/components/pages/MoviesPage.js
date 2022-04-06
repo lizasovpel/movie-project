@@ -1,14 +1,13 @@
-import Categories from "../categories/Categories"
-import Movies from "../movies/Movies"
+import Genres from "../genres/Genres";
+import Movies from "../movies/Movies";
 
 const MoviesPage = () => {
-    return(
-        <>
-            <Categories/>
-            <Movies/>
+	return (
+		<>
+			<Genres />
+			<Movies />
+		</>
+	);
+};
 
-        </>
-    )
-}
-
-export default MoviesPage
+export default MoviesPage;
