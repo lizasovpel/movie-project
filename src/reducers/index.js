@@ -22,6 +22,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				moviesLoadingStatus: "error",
 			};
+		case "PAGE_CHANGE":
+			return {
+				...state,
+				page: state.page + action.payload,
+			};
 
 		default:
 			return state;

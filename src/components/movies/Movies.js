@@ -21,6 +21,13 @@ const Movies = () => {
 		// eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		dispatch(moviesFetching());
+		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+			.then((data) => dispatch(moviesFetched(data)))
+			.catch(() => dispatch(moviesFetchingError()));
+	}, [page]);
+
 	if (moviesLoadingStatus === "loading") {
 		return <Spinner />;
 	} else if (moviesLoadingStatus === "error") {
@@ -49,9 +56,9 @@ const Movies = () => {
 		<div className="moviesContainer">
 			<h2>Movies</h2>
 			<div className="container">{elements}</div>
-			<button type="button" className="btn btn-danger">
+			{/* <button type="button" className="btn btn-danger">
 				Load more
-			</button>
+			</button> */}
 		</div>
 	);
 };
