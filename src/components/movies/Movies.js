@@ -16,8 +16,7 @@ const Movies = () => {
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`${_apiBase}/3/movie/popular?65c77c52934950e077d6655d92b89d39&language=en-US&page=${page}`)
-			// request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 		// eslint-disable-next-line
