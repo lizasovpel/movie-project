@@ -4,13 +4,16 @@ import { useEffect } from "react";
 import { pageChange } from "../../actions";
 
 const Pagination = () => {
-	const { page } = useSelector((state) => state);
+	const { page, moviesLoadingStatus } = useSelector((state) => state);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		console.log(page);
 	}, [page]);
 	const disabled = page === 1 ? "page-item disabled" : "page-item";
+	if (moviesLoadingStatus === "loading") {
+		return <></>;
+	}
 
 	return (
 		<nav>
