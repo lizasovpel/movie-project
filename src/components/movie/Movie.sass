@@ -1,31 +1,92 @@
 @import '../../style/variables'
-
-.movieContainer 
-    margin-top: 150px
-    margin-bottom: 50px
-    width: 100%
+.movieContainer
     color: $white_
-
-    .cont
-        margin-top: 30px
+    position: relative
+    .bg
         width: 100%
-        display: grid
-        grid-template-columns: 1fr 2fr
+        height: 100vh
+        position: fixed
+        top: 0
+        left: 0
+        object-fit: cover
+        overflow: hidden
+        z-index: -1
+    .layer
+        background-color: rgba(5, 5, 5, 0.8)
+        background-size: cover
+        position: fixed
+        top: 0
+        left: 0
+        width: 100vw
+        height: 100vh
+        z-index: -1
+
+    .top
+        margin-top: 200px
         @media all and (max-width: 800px)
-            grid-template-columns: 1fr
+            margin-top: 120px
 
-        .poster img
-            width: 100%
-        .info
-            padding-left: 20px
-            text-align: justify
+        .title
+            display: flex
+            justify-content: space-between
+            *
+                margin-bottom: 0
+            .vote
+                display: flex
+                p
+                    font-size: 2rem
+            img
+                display: block
+                margin-top: 5px
+                padding-left: 20px
+                height: 2rem
             @media all and (max-width: 800px)
-                margin-top: 20px
-                padding-left: 0
-                margin-bottom: 50px
+                display: flex
+                flex-direction: column
+                h2
+                    margin-bottom: 20px
+                    font-size: 2.5rem
 
-            
-            .extraInfo > *
-                margin: 0
-            
-    
+        .details
+            margin-top: 50px
+            display: grid
+            grid-template-columns: 400px auto
+            @media all and (max-width: 800px)
+                display: flex
+                flex-direction: column
+
+            .poster
+                img
+                    width: 100%
+                    border: white 1px solid
+            .info
+                padding-left: 20px
+                @media all and (max-width: 800px)
+                    padding-left: 0
+                    margin-top: 50px
+
+                h4
+                    margin-bottom: 30px
+                b
+                    font-size: 1.2em
+        .overview
+            margin: 50px 0
+            font-size: 1.2em
+            background-color: rgba(255, 255, 255, 0.2)
+            padding: 20px
+
+        .reviews
+            .review
+                margin-bottom: 10px
+                text-align: justify
+                background-color: rgba(255, 255, 255, 0.2)
+                padding: 20px
+                h5
+                    text-decoration: underline
+                :last-child
+                    font-size: 0.8em
+                    text-align: right
+                > *
+                    margin: 0
+
+    // width: 100px
