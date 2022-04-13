@@ -2,6 +2,8 @@ const initialState = {
 	movies: [],
 	moviesLoadingStatus: "idle",
 	page: 1,
+	searchWord: null,
+	movieSearchingStatus: "idle",
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +23,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				moviesLoadingStatus: "error",
+			};
+		case "SEARCH_WORD_CHANGE":
+			return {
+				...state,
+				searchWord: action.payload,
 			};
 
 		default:
