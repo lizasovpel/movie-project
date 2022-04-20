@@ -29,7 +29,6 @@ const reducer = (state = initialState, action) => {
 				...state,
 				searchWord: action.payload,
 			};
-
 		default:
 			return state;
 	}
