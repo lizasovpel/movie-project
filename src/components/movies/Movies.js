@@ -9,14 +9,14 @@ import Spinner from "../spinner/Spinner";
 import { useHttp } from "../../hooks/http.hook";
 
 const Movies = () => {
-	const { movies, moviesLoadingStatus, page, searchWord } = useSelector((state) => state);
+	const { movies, moviesLoadingStatus, activeGenre, page, searchWord } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
 	const _apiBase = "https://api.themoviedb.org";
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 		// eslint-disable-next-line
@@ -42,10 +42,21 @@ const Movies = () => {
 			.catch(() => dispatch(moviesFetchingError()));
 	}, [page]);
 
+	useEffect(() => {
+		if (activeGenre !== "all") {
+			dispatch(moviesFetching());
+			request(
+				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&${page}&with_genres=${activeGenre}`
+			)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		}
+	}, [activeGenre]);
+
 	if (moviesLoadingStatus === "loading") {
 		return <Spinner />;
 	} else if (moviesLoadingStatus === "error") {
-		return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
+		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
 	console.log(movies);
 	const renderMoviesList = (movies) => {

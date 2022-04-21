@@ -7,6 +7,9 @@ const initialState = {
 	movieID: null,
 	movieLoadingStatus: "idle",
 	movieInfo: null,
+	genres: [],
+	genresLoadingStatus: "idle",
+	activeGenre: "all",
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,6 +60,27 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				page: state.page + action.payload,
+			};
+
+		case "GENRES_FETCHING":
+			return {
+				...state,
+				genresLoadingStatus: "loading",
+			};
+		case "GENRES_FETCHED":
+			return {
+				...state,
+				genres: action.payload,
+			};
+		case "GENRES_FETCHING_ERROR":
+			return {
+				...state,
+				genresLoadingStatus: "error",
+			};
+		case "ACTIVE_GENRE_CHANGED":
+			return {
+				...state,
+				activeGenre: action.payload,
 			};
 
 		default:

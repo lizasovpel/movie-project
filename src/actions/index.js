@@ -14,6 +14,28 @@ export const moviesFetchingError = () => {
 		type: "MOVIES_FETCHING_ERROR",
 	};
 };
+export const genresFetching = () => {
+	return {
+		type: "GENRES_FETCHING",
+	};
+};
+export const genresFetched = (genres) => {
+	return {
+		type: "GENRES_FETCHED",
+		payload: genres,
+	};
+};
+export const genresFetchingError = () => {
+	return {
+		type: "GENRES_FETCHING_ERROR",
+	};
+};
+export const activeGenreChanged = (genre) => {
+	return {
+		type: "ACTIVE_GENRE_CHANGED",
+		payload: genre,
+	};
+};
 export const pageChange = (number) => {
 	return {
 		type: "PAGE_CHANGE",
