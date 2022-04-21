@@ -14,6 +14,12 @@ export const moviesFetchingError = () => {
 		type: "MOVIES_FETCHING_ERROR",
 	};
 };
+export const pageChange = (number) => {
+	return {
+		type: "PAGE_CHANGE",
+		payload: number,
+	};
+};
 export const searchWordChange = (word) => {
 	return {
 		type: "SEARCH_WORD_CHANGE",

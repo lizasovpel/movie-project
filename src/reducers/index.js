@@ -53,6 +53,12 @@ const reducer = (state = initialState, action) => {
 				...state,
 				movieLoadingStatus: "error",
 			};
+		case "PAGE_CHANGE":
+			return {
+				...state,
+				page: state.page + action.payload,
+			};
+
 		default:
 			return state;
 	}
