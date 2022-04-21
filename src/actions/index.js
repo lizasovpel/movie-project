@@ -13,7 +13,6 @@ export const moviesFetchingError = () => {
 	return {
 		type: "MOVIES_FETCHING_ERROR",
 	};
-<<<<<<< HEAD
 };
 export const searchWordChange = (word) => {
 	return {
@@ -25,8 +24,6 @@ export const movieSearching = () => {
 	return {
 		type: "MOVIES_FETCHING",
 	};
-=======
->>>>>>> feature/WEB-7
 };
 export const activeMovieChanged = (id) => {
 	return {

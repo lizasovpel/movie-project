@@ -2,14 +2,11 @@ const initialState = {
 	movies: [],
 	moviesLoadingStatus: "idle",
 	page: 1,
-<<<<<<< HEAD
 	searchWord: null,
 	movieSearchingStatus: "idle",
-=======
 	movieID: null,
 	movieLoadingStatus: "idle",
 	movieInfo: null,
->>>>>>> feature/WEB-7
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,13 +27,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				moviesLoadingStatus: "error",
 			};
-<<<<<<< HEAD
 		case "SEARCH_WORD_CHANGE":
 			return {
 				...state,
 				searchWord: action.payload,
 			};
-=======
 		case "ACTIVE_MOVIE_CHANGED":
 			return {
 				...state,
@@ -58,8 +53,6 @@ const reducer = (state = initialState, action) => {
 				...state,
 				movieLoadingStatus: "error",
 			};
-
->>>>>>> feature/WEB-7
 		default:
 			return state;
 	}
