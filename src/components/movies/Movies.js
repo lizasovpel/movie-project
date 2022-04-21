@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { moviesFetched, moviesFetching } from "../../actions";
 import { moviesFetchingError } from "../../actions";
+import { activeMovieChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
 import { useHttp } from "../../hooks/http.hook";
 
@@ -43,7 +44,7 @@ const Movies = () => {
 	const renderMoviesList = (movies) => {
 		return movies.map(({ id, title, release_date, vote_average, poster_path }) => {
 			return (
-				<Link to="movieInfo" key={id}>
+				<Link to="movieInfo" key={id} onClick={() => dispatch(activeMovieChanged(id))}>
 					<div className="movieCard">
 						<div className="movieImage" data-proportion-h="2">
 							<img src={`https://image.tmdb.org/t/p/original${poster_path}`} alt="poster" />
