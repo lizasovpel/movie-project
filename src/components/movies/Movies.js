@@ -8,7 +8,7 @@ import Spinner from "../spinner/Spinner";
 import { useHttp } from "../../hooks/http.hook";
 
 const Movies = () => {
-	const { movies, moviesLoadingStatus, page } = useSelector((state) => state);
+	const { movies, moviesLoadingStatus, page, searchWord } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
 	const _apiBase = "https://api.themoviedb.org";
@@ -20,6 +20,19 @@ const Movies = () => {
 			.catch(() => dispatch(moviesFetchingError()));
 		// eslint-disable-next-line
 	}, []);
+	useEffect(() => {
+		if (searchWord) {
+			dispatch(moviesFetching());
+			request(`${_apiBase}/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		} else {
+			dispatch(moviesFetching());
+			request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		}
+	}, [searchWord]);
 
 	if (moviesLoadingStatus === "loading") {
 		return <Spinner />;

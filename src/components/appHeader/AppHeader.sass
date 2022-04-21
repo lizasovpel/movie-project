@@ -19,35 +19,33 @@ header
         width: 100vw
 
     h1
-        color: $red_    
-        margin-top: 15px
+        color: $red_
+        margin-top: 5px
+        font-size: 40px
 
-
-
-
-    .right 
+    .right
         display: flex
         height: 40px
-        margin: 10px 0
+        margin: 10px 0 10px 10px
 
-        .searchInput 
-            display: flex
-        img
-            height: 30px
-            margin-top: 5px
-            :hover
-                cursor: pointer
+        .container-fluid
+            padding: 0
+            img
+                height: 20px
+                margin-top: 5px
+                :hover
+                    cursor: pointer
 
             >*
                 display: block
 
         .loginBtn
             margin-left: 20px
+            @media all and (max-width: 800px)
+                margin-left: 5px
 
             button
                 display: block
                 height: 100%
                 background-color: $red_
                 color: white
-
-        
