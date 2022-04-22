@@ -97,3 +97,8 @@ export const reviewsFetchingError = () => {
 		type: "REVIEWS_FETCHING_ERROR",
 	};
 };
+export const reviewsPageChange = () => {
+	return {
+		type: "REVIEWS_PAGE_CHANGE",
+	};
+};

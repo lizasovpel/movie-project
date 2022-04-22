@@ -25,6 +25,8 @@ const Movies = () => {
 			dispatch(moviesFetching());
 			request(`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
 				.then((data) => dispatch(moviesFetched(data)))
+				.then((data) => console.log(data))
+
 				.catch(() => dispatch(moviesFetchingError()));
 		} else {
 			dispatch(moviesFetching());
