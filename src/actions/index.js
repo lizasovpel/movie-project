@@ -75,8 +75,9 @@ export const movieFetchingError = () => {
 		type: "MOVIE_FETCHING_ERROR",
 	};
 };
-// export const movieFetching = () => {
-// 	return {
-// 		type: "MOVIE_FETCHING",
-// 	};
-// };
+export const castFetched = (data) => {
+	return {
+		type: "CAST_FETCHED",
+		payload: data.cast,
+	};
+};

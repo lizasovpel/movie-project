@@ -24,14 +24,6 @@ const Genres = () => {
 	}
 
 	const renderGenres = (genres) => {
-		// if (genres.length === 0) {
-		// 	return (
-		// 		<h5 className="text-center" style={{ color: "white" }}>
-		// 			Genres not found
-		// 		</h5>
-		// 	);
-		// }
-
 		return genres.map(({ id, name }) => {
 			return (
 				<button
