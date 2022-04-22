@@ -2,11 +2,12 @@ const initialState = {
 	movies: [],
 	moviesLoadingStatus: "idle",
 	page: 1,
-	searchWord: null,
+	searchWord: "",
 	movieSearchingStatus: "idle",
 	movieID: null,
 	movieLoadingStatus: "idle",
 	movieInfo: null,
+	cast: null,
 	genres: [],
 	genresLoadingStatus: "idle",
 	activeGenre: "all",
@@ -35,6 +36,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				searchWord: action.payload,
 			};
+		case "SEARCH_WORD_NULL":
+			return {
+				...state,
+				searchWord: "",
+			};
 		case "ACTIVE_MOVIE_CHANGED":
 			return {
 				...state,
@@ -56,6 +62,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				movieLoadingStatus: "error",
 			};
+		case "CAST_FETCHED":
+			return {
+				...state,
+				cast: action.payload,
+			};
 		case "PAGE_CHANGE":
 			return {
 				...state,
@@ -71,6 +82,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				genres: action.payload,
+				genresLoadingStatus: "idle",
 			};
 		case "GENRES_FETCHING_ERROR":
 			return {

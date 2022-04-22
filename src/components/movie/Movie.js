@@ -2,90 +2,144 @@ import "./Movie.sass";
 import bg from "../../img/FCBG.webp";
 import poster from "../../img/FCposter.jpeg";
 import stars from "../../img/stars.png";
+import Spinner from "../spinner/Spinner";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHttp } from "../../hooks/http.hook";
+import { movieFetching, movieFetched, movieFetchingError, castFetched } from "../../actions";
 
 const Movie = () => {
-	return (
-		<div className="movieContainer">
-			<img className="bg" src={bg} alt="bg" />
-			<div className="layer"></div>
+	const { movieID, movieInfo, cast } = useSelector((state) => state);
+	const dispatch = useDispatch();
+	const { request } = useHttp();
 
-			<div className="top">
-				<div className="title">
-					<h2>Fight Club</h2>
-					<div className="vote">
-						<p>7.8</p>
-						<img src={stars} alt="" />
-					</div>
-				</div>
+	useEffect(() => {
+		dispatch(movieFetching());
+		request(
+			`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`
+		).then((data) => dispatch(castFetched(data)));
+		request(`https://api.themoviedb.org/3/movie/${movieID}?${process.env.REACT_APP_KEY}&language=en-US`)
+			.then((data) => dispatch(movieFetched(data)))
+			.catch(() => dispatch(movieFetchingError()));
 
-				<div className="details">
-					<div className="poster">
-						<img src={poster} alt="" />
+		// eslint-disable-next-line
+	}, [movieID]);
+
+	if (movieInfo && cast) {
+		const {
+			original_title,
+			backdrop_path,
+			poster_path,
+			overview,
+			tagline,
+			vote_average,
+			production_countries,
+			revenue,
+			runtime,
+			release_date,
+			genres,
+		} = movieInfo;
+		const renderCast = (cast) => {
+			const actorsList = cast.map(function (actor) {
+				if (cast.length >= 4 && actor.order < 5) {
+					return actor.name + ", ";
+				} else if (actor.order === 5) {
+					return actor.name;
+				}
+			});
+			return actorsList;
+		};
+		const renderInfo = (allInfo) => {
+			return allInfo.map((info) => (allInfo.indexOf(info) === allInfo.length - 1 ? info.name : info.name + ", "));
+		};
+
+		return (
+			<div className="movieContainer">
+				<img
+					className="bg"
+					src={backdrop_path ? `https://image.tmdb.org/t/p/original${backdrop_path}` : null}
+					alt="bg"
+				/>
+				<div className="layer"></div>
+
+				<div className="top">
+					<div className="title">
+						<h2>{original_title}</h2>
+						<div className="vote">
+							<p>{vote_average}</p>
+							<img src={stars} alt="" />
+						</div>
 					</div>
-					<div className="info">
-						<h4>How much can you know about yourself if you've never been in a fight?</h4>
-						<p>
-							year: <b>1999</b>
-						</p>
-						<p>
-							genre: <b>drama, criminal</b>
-						</p>
-						<p>
-							country: <b>US</b>
-						</p>
-						<p>
-							revenue: <b>100853753$</b>
-						</p>
-						<p>
-							runtime: <b>139 m</b>
-						</p>
-						<p>
-							cast members:{" "}
-							<b>
-								Brad Pitt, Edward Norton, Meat Loaf, Zach Grenier, Richmond Arquette, David Andrews,
-								George Maguire
-							</b>
-						</p>
+
+					<div className="details">
+						<div className="poster">
+							<img
+								src={
+									poster_path
+										? `https://image.tmdb.org/t/p/original${poster_path}`
+										: "https://freepikpsd.com/file/2019/10/image-not-found-png-4-Transparent-Images.png"
+								}
+								alt=""
+							/>
+						</div>
+						<div className="info">
+							<h4>{tagline}</h4>
+							<p>
+								year: <b>{release_date.slice(0, 4)}</b>
+							</p>
+							<p>
+								genre: <b>{renderInfo(genres)}</b>
+							</p>
+							<p>
+								country: <b>{renderInfo(production_countries)}</b>
+							</p>
+							<p>
+								revenue: <b>{revenue} $</b>
+							</p>
+							<p>
+								runtime: <b>{runtime} m</b>
+							</p>
+							<p>
+								cast members: <b>{renderCast(cast)}</b>
+							</p>
+						</div>
 					</div>
-				</div>
-				<div className="overview">
-					<h3>Overview</h3>
-					<p>
-						A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a
-						shocking new form of therapy. Their concept catches on, with underground "fight clubs" forming
-						in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward
-						oblivion.
-					</p>
-				</div>
-				<div className="reviews">
-					<h3 style={{ paddingLeft: "20px" }}>Reviews</h3>
-					<div className="review">
-						<h5 className="name">onthestree</h5>
-						<p className="text">
-							Because you'll probably be confused the first time around. It's not a coincidence it stars
-							some of the greatest actors of our time.
-						</p>
-						<p>11 February 2020</p>
+					<div className="overview">
+						<h3>Overview</h3>
+						<p>{overview}</p>
 					</div>
-					<div className="review">
-						<h5 className="name">onthestree</h5>
-						<p className="text">
-							Because you'll probably be confused the first time around. It's not a coincidence it stars
-							some of the greatest actors of our time.
-						</p>
-						<p>11 February 2020</p>
-					</div>
-					<div className="review">
-						<h5 className="name">onthestree</h5>
-						<p className="text">
-							Because you'll probably be confused the first time around. It's not a coincidence it stars
-							some of the greatest actors of our time.
-						</p>
-						<p>11 February 2020</p>
+					<div className="reviews">
+						<h3 style={{ paddingLeft: "20px" }}>Reviews</h3>
+						<div className="review">
+							<h5 className="name">onthestree</h5>
+							<p className="text">
+								Because you'll probably be confused the first time around. It's not a coincidence it
+								stars some of the greatest actors of our time.
+							</p>
+							<p>11 February 2020</p>
+						</div>
+						<div className="review">
+							<h5 className="name">onthestree</h5>
+							<p className="text">
+								Because you'll probably be confused the first time around. It's not a coincidence it
+								stars some of the greatest actors of our time.
+							</p>
+							<p>11 February 2020</p>
+						</div>
+						<div className="review">
+							<h5 className="name">onthestree</h5>
+							<p className="text">
+								Because you'll probably be confused the first time around. It's not a coincidence it
+								stars some of the greatest actors of our time.
+							</p>
+							<p>11 February 2020</p>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
+		);
+	} else {
+		return <Spinner />;
+	}
 };
 export default Movie;

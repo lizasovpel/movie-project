@@ -12,7 +12,6 @@ const Movies = () => {
 	const { movies, moviesLoadingStatus, activeGenre, page, searchWord } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
-	const _apiBase = "https://api.themoviedb.org";
 
 	useEffect(() => {
 		dispatch(moviesFetching());
@@ -24,12 +23,14 @@ const Movies = () => {
 	useEffect(() => {
 		if (searchWord) {
 			dispatch(moviesFetching());
-			request(`${_apiBase}/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
+			request(`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));
 		} else {
 			dispatch(moviesFetching());
-			request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+			request(
+				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+			)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));
 		}
@@ -37,7 +38,7 @@ const Movies = () => {
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`${_apiBase}/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
+		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 	}, [page]);
@@ -58,14 +59,20 @@ const Movies = () => {
 	} else if (moviesLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
-	console.log(movies);
 	const renderMoviesList = (movies) => {
 		return movies.map(({ id, title, release_date, vote_average, poster_path }) => {
 			return (
 				<Link to="movieInfo" key={id} onClick={() => dispatch(activeMovieChanged(id))}>
 					<div className="movieCard">
 						<div className="movieImage" data-proportion-h="2">
-							<img src={`https://image.tmdb.org/t/p/original${poster_path}`} alt="poster" />
+							<img
+								src={
+									poster_path
+										? `https://image.tmdb.org/t/p/original${poster_path}`
+										: "https://freepikpsd.com/file/2019/10/image-not-found-png-4-Transparent-Images.png"
+								}
+								alt="poster"
+							/>
 							<div className="rating">{vote_average}</div>
 						</div>
 						<h4>{title}</h4>
