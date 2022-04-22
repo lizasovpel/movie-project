@@ -81,3 +81,19 @@ export const castFetched = (data) => {
 		payload: data.cast,
 	};
 };
+export const reviewsFetching = () => {
+	return {
+		type: "REVIEWS_FETCHING",
+	};
+};
+export const reviewsFetched = (data) => {
+	return {
+		type: "REVIEWS_FETCHED",
+		payload: data,
+	};
+};
+export const reviewsFetchingError = () => {
+	return {
+		type: "REVIEWS_FETCHING_ERROR",
+	};
+};

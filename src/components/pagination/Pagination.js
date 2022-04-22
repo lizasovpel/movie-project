@@ -1,6 +1,5 @@
 import "./Pagination.sass";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { pageChange } from "../../actions";
 
 const Pagination = () => {
@@ -40,22 +39,6 @@ const Pagination = () => {
 				</li>
 			</ul>
 		</nav>
-		// <div className="pagination">
-		// 	<div className="buttons">
-		// 		<button
-		// 			type="button"
-		// 			className="btn btn-outline-light w100"
-		// 			style={page === 1 ? { visibility: "hidden" } : null}
-		// 			onClick={() => dispatch(pageChange(-1))}
-		// 		>
-		// 			&laquo;
-		// 		</button>
-		// 		<div className="pageNumber">{page}</div>
-		// 		<button type="button" className="btn btn-outline-light w100" onClick={() => dispatch(pageChange(1))}>
-		// 			&laquo;
-		// 		</button>
-		// 	</div>
-		// </div>
 	);
 };
 

@@ -1,6 +1,4 @@
 import "./Movie.sass";
-import bg from "../../img/FCBG.webp";
-import poster from "../../img/FCposter.jpeg";
 import stars from "../../img/stars.png";
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
@@ -9,7 +7,7 @@ import { useHttp } from "../../hooks/http.hook";
 import { movieFetching, movieFetched, movieFetchingError, castFetched } from "../../actions";
 
 const Movie = () => {
-	const { movieID, movieInfo, cast } = useSelector((state) => state);
+	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const { request } = useHttp();
 
@@ -24,6 +22,11 @@ const Movie = () => {
 
 		// eslint-disable-next-line
 	}, [movieID]);
+	if (movieLoadingStatus === "loading") {
+		return <Spinner />;
+	} else if (movieLoadingStatus === "error") {
+		return <h5 className="text-center mt-5">Loading Error</h5>;
+	}
 
 	if (movieInfo && cast) {
 		const {
@@ -107,33 +110,6 @@ const Movie = () => {
 					<div className="overview">
 						<h3>Overview</h3>
 						<p>{overview}</p>
-					</div>
-					<div className="reviews">
-						<h3 style={{ paddingLeft: "20px" }}>Reviews</h3>
-						<div className="review">
-							<h5 className="name">onthestree</h5>
-							<p className="text">
-								Because you'll probably be confused the first time around. It's not a coincidence it
-								stars some of the greatest actors of our time.
-							</p>
-							<p>11 February 2020</p>
-						</div>
-						<div className="review">
-							<h5 className="name">onthestree</h5>
-							<p className="text">
-								Because you'll probably be confused the first time around. It's not a coincidence it
-								stars some of the greatest actors of our time.
-							</p>
-							<p>11 February 2020</p>
-						</div>
-						<div className="review">
-							<h5 className="name">onthestree</h5>
-							<p className="text">
-								Because you'll probably be confused the first time around. It's not a coincidence it
-								stars some of the greatest actors of our time.
-							</p>
-							<p>11 February 2020</p>
-						</div>
 					</div>
 				</div>
 			</div>
