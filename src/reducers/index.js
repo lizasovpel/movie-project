@@ -39,6 +39,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				searchWord: action.payload,
+				page: 1,
 			};
 		case "SEARCH_WORD_NULL":
 			return {
@@ -56,7 +57,6 @@ const reducer = (state = initialState, action) => {
 				genres: [],
 				reviewsPage: 1,
 				totalReviewPages: null,
-				page: 1,
 			};
 		case "MOVIE_FETCHING":
 			return {
@@ -68,7 +68,6 @@ const reducer = (state = initialState, action) => {
 				...state,
 				movieLoadingStatus: "idle",
 				movieInfo: action.payload,
-				page: 1,
 			};
 		case "MOVIE_FETCHING_ERROR":
 			return {
@@ -96,7 +95,6 @@ const reducer = (state = initialState, action) => {
 				...state,
 				genres: action.payload,
 				genresLoadingStatus: "idle",
-				page: 1,
 			};
 		case "GENRES_FETCHING_ERROR":
 			return {
@@ -107,6 +105,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				activeGenre: action.payload,
+				page: 1,
 			};
 		case "REVIEWS_FETCHING":
 			return {
