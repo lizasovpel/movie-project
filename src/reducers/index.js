@@ -4,13 +4,17 @@ const initialState = {
 	page: 1,
 	searchWord: "",
 	movieSearchingStatus: "idle",
-	movieID: null,
+	movieID: "",
 	movieLoadingStatus: "idle",
 	movieInfo: null,
-	cast: null,
+	cast: [],
 	genres: [],
 	genresLoadingStatus: "idle",
 	activeGenre: "all",
+	reviewsLoadingStatus: "idle",
+	reviewsPage: 1,
+	reviews: [],
+	totalReviewPages: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -93,6 +97,23 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				activeGenre: action.payload,
+			};
+		case "REVIEWS_FETCHING":
+			return {
+				...state,
+				reviewsLoadingStatus: "loading",
+			};
+		case "REVIEWS_FETCHED":
+			return {
+				...state,
+				reviewsLoadingStatus: "idle",
+				reviews: action.payload.results,
+				totalReviewPages: action.payload.total_pages,
+			};
+		case "REVIEWS_FETCHING_ERROR":
+			return {
+				...state,
+				reviewsLoadingStatus: "error",
 			};
 
 		default:
