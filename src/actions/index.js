@@ -102,21 +102,3 @@ export const reviewsPageChange = () => {
 		type: "REVIEWS_PAGE_CHANGE",
 	};
 };
-export const loginChange = (login) => {
-	return {
-		type: "LOGIN_CHANGE",
-		payload: login,
-	};
-};
-export const passwordChange = (password) => {
-	return {
-		type: "PASSWORD_CHANGE",
-		payload: password,
-	};
-};
-export const tokenFetched = (data) => {
-	return {
-		type: "TOKEN_FETCHED",
-		payload: data.request_token,
-	};
-};

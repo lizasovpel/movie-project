@@ -10,8 +10,8 @@ export const useHttpGet = () => {
 	return { request };
 };
 export const useHttpsPost = () => {
-	const postRequest = useCallback(async (data) => {
-		const res = await axios.post(data);
+	const postRequest = useCallback((url, body) => {
+		const res = axios.post(url, body);
 		return res;
 	}, []);
 	return { postRequest };
