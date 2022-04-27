@@ -6,12 +6,12 @@ import { moviesFetched, moviesFetching } from "../../actions";
 import { moviesFetchingError } from "../../actions";
 import { activeMovieChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
-import { useHttp } from "../../hooks/http.hook";
+import { useHttpGet } from "../../hooks/http.hook";
 
 const Movies = () => {
 	const { movies, moviesLoadingStatus, activeGenre, page, searchWord } = useSelector((state) => state);
 	const dispatch = useDispatch();
-	const { request } = useHttp();
+	const { request } = useHttpGet();
 
 	useEffect(() => {
 		dispatch(moviesFetching());

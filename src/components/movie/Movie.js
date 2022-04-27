@@ -3,13 +3,13 @@ import stars from "../../img/stars.png";
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
+import { useHttpGet } from "../../hooks/http.hook";
 import { movieFetching, movieFetched, movieFetchingError, castFetched } from "../../actions";
 
 const Movie = () => {
 	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state);
 	const dispatch = useDispatch();
-	const { request } = useHttp();
+	const { request } = useHttpGet();
 
 	useEffect(() => {
 		dispatch(movieFetching());
@@ -41,6 +41,7 @@ const Movie = () => {
 			runtime,
 			release_date,
 			genres,
+			budget,
 		} = movieInfo;
 		const renderCast = (cast) => {
 			const actorsList = cast.map(function (actor) {
@@ -95,6 +96,9 @@ const Movie = () => {
 							</p>
 							<p>
 								country: <b>{renderInfo(production_countries)}</b>
+							</p>
+							<p>
+								budget: <b>{budget} $</b>
 							</p>
 							<p>
 								revenue: <b>{revenue} $</b>

@@ -1,5 +1,5 @@
 import "./Genres.sass";
-import { useHttp } from "../../hooks/http.hook";
+import { useHttpGet } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged } from "../../actions";
@@ -8,7 +8,7 @@ import Spinner from "../spinner/Spinner";
 const Genres = () => {
 	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state);
 	const dispatch = useDispatch();
-	const { request } = useHttp();
+	const { request } = useHttpGet();
 
 	useEffect(() => {
 		dispatch(genresFetching());

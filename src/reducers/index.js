@@ -15,6 +15,9 @@ const initialState = {
 	reviewsPage: 1,
 	reviews: [],
 	totalReviewPages: null,
+	login: "",
+	password: "",
+	token: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -128,6 +131,21 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				reviewsPage: state.reviewsPage + 1,
+			};
+		case "LOGIN_CHANGE":
+			return {
+				...state,
+				login: action.payload,
+			};
+		case "PASSWORD_CHANGE":
+			return {
+				...state,
+				password: action.payload,
+			};
+		case "TOKEN_FETCHED":
+			return {
+				...state,
+				token: action.payload,
 			};
 
 		default:
