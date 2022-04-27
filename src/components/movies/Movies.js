@@ -78,7 +78,7 @@ const Movies = () => {
 							<div className="rating">{vote_average}</div>
 						</div>
 						<h4>{title}</h4>
-						<p>{release_date.slice(0, 4)}</p>
+						<p>{release_date ? release_date.slice(0, 4) : null}</p>
 					</div>
 				</Link>
 			);
