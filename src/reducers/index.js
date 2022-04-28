@@ -15,9 +15,6 @@ const initialState = {
 	reviewsPage: 1,
 	reviews: [],
 	totalReviewPages: null,
-	login: "",
-	password: "",
-	token: "",
 };
 
 const reducer = (state = initialState, action) => {

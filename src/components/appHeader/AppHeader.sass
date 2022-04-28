@@ -47,5 +47,46 @@ header
             button
                 display: block
                 height: 100%
+                width: 80px
                 background-color: $red_
                 color: white
+            #Account
+                width: 40px
+                height: 40px
+                border-radius: 50%
+                background-color: $white_
+                margin-left: 40px
+                color: $red_
+                font-size: 35px
+                font-weight: 700
+                display: table-cell
+                vertical-align: middle
+                text-align: center
+                position: relative
+                span
+                    position: relative
+                    top: -8px
+
+    #menu
+        position: absolute
+        list-style-type: none
+        color: $white_
+        top: 100px
+        right: 200px
+        width: 300px
+        background-color: $dark
+        padding: 0
+
+        @media all and (max-width: 1200px)
+            right: 100px
+        @media all and (max-width: 800px)
+            right: 20px
+        a
+
+            li
+                padding: 20px
+
+                color: $white_
+        :hover
+            background-color: #2b2b2b
+            cursor: pointer

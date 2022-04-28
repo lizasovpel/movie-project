@@ -32,18 +32,13 @@ const SignIn = () => {
 						<label htmlFor="loginInput" className="form-label">
 							Login
 						</label>
-						<input
-							id="loginInput"
-							className="form-control"
-							aria-describedby="emailHelp"
-							value="lizasovpel"
-						/>
+						<input id="loginInput" className="form-control" aria-describedby="emailHelp" />
 					</div>
 					<div className="mb-3">
 						<label htmlFor="passwordInput" className="form-label">
 							Password
 						</label>
-						<input id="passwordInput" type="password" className="form-control" value="7242550inebun" />
+						<input id="passwordInput" type="password" className="form-control" />
 						{/* <div id="loginHelp" className="form-text">error message</div> */}
 					</div>
 					<button type="submit" className="btn">

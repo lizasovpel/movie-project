@@ -90,9 +90,6 @@ const Movies = () => {
 		<div className="moviesContainer">
 			<h2>Movies</h2>
 			<div className="container">{elements}</div>
-			{/* <button type="button" className="btn btn-danger">
-				Load more
-			</button> */}
 		</div>
 	);
 };

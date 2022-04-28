@@ -3,7 +3,60 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { searchWordChange, movieSearching } from "../../actions";
 import search from "../../img/search.png";
+import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
+
 const AppHeader = () => {
+	const { request } = useHttpGet();
+	const { postRequest } = useHttpsPost();
+	const SignInButton = document.querySelector("#SignIn");
+	const StartButton = document.querySelector("#Start");
+	const AccountButton = document.querySelector("#Account");
+	const Menu = document.querySelector("#menu");
+	const username = localStorage.getItem("username");
+
+	const signIn = async () => {
+		SignInButton.hidden = true;
+		StartButton.hidden = false;
+		await request(`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`).then(
+			(data) => localStorage.setItem("token", data.request_token)
+		);
+		window.open(`https://www.themoviedb.org/authenticate/${localStorage.getItem("token")}`);
+	};
+
+	const start = async () => {
+		await postRequest(`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`, {
+			"request_token": localStorage.getItem("token"),
+		}).then((res) => localStorage.setItem("session_id", res.data.session_id));
+		await request(
+			`https://api.themoviedb.org/3/account?${process.env.REACT_APP_KEY}&session_id=${localStorage.getItem(
+				"session_id"
+			)}`
+		).then((res) => {
+			localStorage.setItem("username", res.username);
+			localStorage.setItem("id", res.id);
+		});
+		if (username) {
+			StartButton.hidden = true;
+			AccountButton.hidden = false;
+		}
+	};
+
+	const signOut = () => {
+		localStorage.setItem("session_id", null);
+		localStorage.setItem("username", null);
+		localStorage.setItem("id", null);
+		localStorage.setItem("token", null);
+		SignInButton.hidden = false;
+		AccountButton.hidden = true;
+	};
+
+	const showMenu = () => {
+		Menu.hidden = false;
+	};
+	const hideMenu = (e) => {
+		Menu.hidden = true;
+	};
+
 	const { searchWord } = useSelector((state) => state);
 	const dispatch = useDispatch();
 	return (
@@ -28,14 +81,35 @@ const AppHeader = () => {
 						</div>
 					</form>
 				</div>
-				<div className="loginBtn">
-					<Link to="/signIn">
-						<button type="button" className="btn">
-							Sign in
-						</button>
-					</Link>
+				<div className="loginBtn" id="btn">
+					<button id="SignIn" type="button" className="btn" onClick={signIn}>
+						Sign in
+					</button>
+					<button id="Start" type="button" className="btn" hidden onClick={start}>
+						Start
+					</button>
+					<div id="Account" type="button" hidden onClick={showMenu}>
+						<span>{username !== null ? username.slice(0, 1).toUpperCase() : ""}</span>
+					</div>
 				</div>
 			</div>
+			<ul id="menu" hidden onClick={(e) => hideMenu(e)}>
+				<Link to="/watchlist">
+					<li>Movie watchlist</li>
+				</Link>
+				<Link to="/watchlist">
+					<li>TV Show watchlist</li>
+				</Link>
+				<Link to="/">
+					<li>Favorite movies</li>
+				</Link>
+				<Link to="/">
+					<li>Favorite TV Shows</li>
+				</Link>
+				<Link to="/">
+					<li onClick={signOut}>Sign out</li>
+				</Link>
+			</ul>
 		</header>
 	);
 };
