@@ -1,5 +1,6 @@
 import "./AppHeader.sass";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { searchWordChange, movieSearching } from "../../actions";
 import search from "../../img/search.png";
@@ -12,8 +13,7 @@ const AppHeader = () => {
 	const StartButton = document.querySelector("#Start");
 	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
-	const username = localStorage.getItem("username");
-
+	const userLogo = document.querySelector("#userLogo");
 	const signIn = async () => {
 		SignInButton.hidden = true;
 		StartButton.hidden = false;
@@ -33,9 +33,10 @@ const AppHeader = () => {
 			)}`
 		).then((res) => {
 			localStorage.setItem("username", res.username);
+			userLogo.innerHTML = localStorage.getItem("username").slice(0, 1).toUpperCase();
 			localStorage.setItem("id", res.id);
 		});
-		if (username) {
+		if (localStorage.getItem("username")) {
 			StartButton.hidden = true;
 			AccountButton.hidden = false;
 		}
@@ -46,12 +47,16 @@ const AppHeader = () => {
 		localStorage.setItem("username", null);
 		localStorage.setItem("id", null);
 		localStorage.setItem("token", null);
+		localStorage.setItem("watchlist", null);
 		SignInButton.hidden = false;
 		AccountButton.hidden = true;
 	};
 
 	const showMenu = () => {
 		Menu.hidden = false;
+		if (!localStorage.getItem("session_id")) {
+			start();
+		}
 	};
 	const hideMenu = (e) => {
 		Menu.hidden = true;
@@ -89,16 +94,13 @@ const AppHeader = () => {
 						Start
 					</button>
 					<div id="Account" type="button" hidden onClick={showMenu}>
-						<span>{username !== null ? username.slice(0, 1).toUpperCase() : ""}</span>
+						<span id="userLogo"></span>
 					</div>
 				</div>
 			</div>
 			<ul id="menu" hidden onClick={(e) => hideMenu(e)}>
 				<Link to="/watchlist">
-					<li>Movie watchlist</li>
-				</Link>
-				<Link to="/watchlist">
-					<li>TV Show watchlist</li>
+					<li>Watchlist</li>
 				</Link>
 				<Link to="/">
 					<li>Favorite movies</li>
