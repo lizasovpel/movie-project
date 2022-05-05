@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageChange } from "../../actions";
 
 const Pagination = () => {
-	const { moviesLoadingStatus, movies } = useSelector((state) => state.movies);
+	const { movies } = useSelector((state) => state.movies);
 	const { page } = useSelector((state) => state.pages);
 
 	const dispatch = useDispatch();
