@@ -6,7 +6,7 @@ import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged 
 import Spinner from "../spinner/Spinner";
 
 const Genres = () => {
-	const { genres, genresLoadingStatus } = useSelector((state) => state.genres);
+	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state.genres);
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 
@@ -19,17 +19,25 @@ const Genres = () => {
 		// eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		console.log(activeGenre);
+		renderGenres(genres);
+	}, [activeGenre]);
+
 	if (genresLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
+	const activeStyle = { "backgroundColor": "white", "color": "black" };
 
 	const renderGenres = (genres) => {
 		return genres.map(({ id, name }) => {
 			return (
 				<button
 					key={id}
+					id={name}
 					type="button"
 					className="btn btn-outline-light"
+					style={activeGenre === id ? activeStyle : {}}
 					onClick={() => dispatch(activeGenreChanged(id))}
 				>
 					{name}

@@ -1,19 +1,19 @@
 @import '../../style/variables'
 .Container
-    padding: 20px 0  
+    padding: 20px 0
     h2
         color: $white_
     .genres
         display: flex
         flex-wrap: wrap
-        button 
-            margin: 20px 30px 0 0 
+        button
+            margin: 20px 30px 0 0
             padding: 5px 30px
             border-radius: 50px
+            &:target
+                color: red
             @media all and (max-width: 800px)
                 border: none
                 padding: 0
-                margin: 0 15px 10px 0 
+                margin: 0 15px 10px 0
                 text-decoration: underline
-
-
