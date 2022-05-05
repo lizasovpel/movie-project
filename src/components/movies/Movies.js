@@ -10,7 +10,7 @@ import { useHttpGet } from "../../hooks/http.hook";
 
 const Movies = () => {
 	const { searchWord } = useSelector((state) => state.search);
-	const { page } = useSelector((state) => state.pages);
+	const { page } = useSelector((state) => state.movies);
 
 	const { movies, moviesLoadingStatus } = useSelector((state) => state.movies);
 	const { activeGenre } = useSelector((state) => state.genres);
@@ -30,8 +30,6 @@ const Movies = () => {
 			dispatch(moviesFetching());
 			request(`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
 				.then((data) => dispatch(moviesFetched(data)))
-				.then((data) => console.log(data))
-
 				.catch(() => dispatch(moviesFetchingError()));
 		} else {
 			dispatch(moviesFetching());

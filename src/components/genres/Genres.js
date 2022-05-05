@@ -19,11 +19,6 @@ const Genres = () => {
 		// eslint-disable-next-line
 	}, []);
 
-	useEffect(() => {
-		console.log(activeGenre);
-		renderGenres(genres);
-	}, [activeGenre]);
-
 	if (genresLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}

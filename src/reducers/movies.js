@@ -1,6 +1,8 @@
 const initialState = {
 	movies: [],
 	moviesLoadingStatus: "idle",
+	page: 1,
+	totalPages: 1,
 };
 
 const movies = (state = initialState, action) => {
@@ -15,6 +17,7 @@ const movies = (state = initialState, action) => {
 				...state,
 				moviesLoadingStatus: "idle",
 				movies: action.payload.results,
+				totalPages: action.payload.total_pages,
 			};
 		case "MOVIES_FETCHING_ERROR":
 			return {
@@ -26,6 +29,12 @@ const movies = (state = initialState, action) => {
 				...state,
 				movies: [],
 			};
+		case "MOVIES_PAGE_CHANGE":
+			return {
+				...state,
+				page: state.page + action.payload,
+			};
+
 		default:
 			return state;
 	}

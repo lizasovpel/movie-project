@@ -99,7 +99,7 @@ const AppHeader = () => {
 				</div>
 			</div>
 			<ul id="menu" hidden onClick={(e) => hideMenu(e)}>
-				<Link to="/watchlist">
+				<Link to="/moviesWatchlist">
 					<li>Watchlist</li>
 				</Link>
 				<Link to="/">
