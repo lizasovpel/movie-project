@@ -6,7 +6,7 @@ import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged 
 import Spinner from "../spinner/Spinner";
 
 const Genres = () => {
-	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state);
+	const { genres, genresLoadingStatus } = useSelector((state) => state.genres);
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 

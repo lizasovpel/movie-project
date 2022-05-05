@@ -6,7 +6,9 @@ import { reviewsFetching, reviewsFetched, reviewsFetchingError, reviewsPageChang
 import Spinner from "../spinner/Spinner";
 
 const Reviews = () => {
-	const { movieID, reviewsPage, reviews, reviewsLoadingStatus, totalReviewPages } = useSelector((state) => state);
+	const { movieID } = useSelector((state) => state.movieInfo);
+	const { reviewsPage, reviews, reviewsLoadingStatus, totalReviewPages } = useSelector((state) => state.reviews);
+
 	const { request } = useHttpGet();
 	const dispatch = useDispatch();
 	useEffect(() => {

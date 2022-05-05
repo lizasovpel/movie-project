@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageChange } from "../../actions";
 
 const Pagination = () => {
-	const { page, moviesLoadingStatus } = useSelector((state) => state);
+	const { moviesLoadingStatus, movies } = useSelector((state) => state.movies);
+	const { page } = useSelector((state) => state.pages);
+
 	const dispatch = useDispatch();
 
 	const disabled = page === 1 ? "page-item disabled" : "page-item";
-	if (moviesLoadingStatus === "loading") {
+	if (movies.length === 0) {
 		return <></>;
 	}
 

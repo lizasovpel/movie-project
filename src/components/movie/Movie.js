@@ -7,7 +7,7 @@ import { useHttpGet } from "../../hooks/http.hook";
 import { movieFetching, movieFetched, movieFetchingError, castFetched } from "../../actions";
 
 const Movie = () => {
-	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state);
+	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 

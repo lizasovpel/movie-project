@@ -9,7 +9,12 @@ import Spinner from "../spinner/Spinner";
 import { useHttpGet } from "../../hooks/http.hook";
 
 const Movies = () => {
-	const { movies, moviesLoadingStatus, activeGenre, page, searchWord } = useSelector((state) => state);
+	const { searchWord } = useSelector((state) => state.search);
+	const { page } = useSelector((state) => state.pages);
+
+	const { movies, moviesLoadingStatus } = useSelector((state) => state.movies);
+	const { activeGenre } = useSelector((state) => state.genres);
+
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 
