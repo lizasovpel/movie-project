@@ -39,6 +39,7 @@ const movies = (state = initialState, action) => {
 				...state,
 				moviesLoadingStatus: "loading",
 				movies: [],
+				page: 1,
 			};
 
 		default:

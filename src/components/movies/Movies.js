@@ -40,19 +40,39 @@ const Movies = () => {
 				.catch(() => dispatch(moviesFetchingError()));
 		}
 	}, [searchWord]);
+	useEffect(() => {
+		if (movies.length === 0) {
+			dispatch(moviesFetching());
+			request(
+				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+			)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		}
+	}, [movies]);
 
 	useEffect(() => {
 		dispatch(moviesFetching());
-		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
-			.then((data) => dispatch(moviesFetched(data)))
-			.catch(() => dispatch(moviesFetchingError()));
+		if (activeGenre === "all") {
+			request(
+				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+			)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		} else {
+			request(
+				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=${page}&with_genres=${activeGenre}`
+			)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		}
 	}, [page]);
 
 	useEffect(() => {
 		if (activeGenre !== "all") {
 			dispatch(moviesFetching());
 			request(
-				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&${page}&with_genres=${activeGenre}`
+				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=${activeGenre}`
 			)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));
