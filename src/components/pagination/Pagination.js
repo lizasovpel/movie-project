@@ -30,7 +30,7 @@ const Pagination = () => {
 		return dispatch(a(b));
 	};
 
-	if (list.length !== 0) {
+	if (list && list.length !== 0) {
 		return (
 			<div className="button" style={{ "display": display }}>
 				<button type="button" className="btn btn-outline-danger" onClick={() => action(actionType, 1)}>

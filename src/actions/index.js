@@ -141,3 +141,8 @@ export const userLoggedIn = () => {
 		type: "USER_LOGGED_IN",
 	};
 };
+export const userLoggedOut = () => {
+	return {
+		type: "USER_LOGGED_OUT",
+	};
+};

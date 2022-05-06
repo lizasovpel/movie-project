@@ -2,7 +2,7 @@ import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWordChange, movieSearching, mainPage } from "../../actions";
+import { searchWordChange, movieSearching, mainPage, userLoggedOut } from "../../actions";
 import search from "../../img/search.png";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 
@@ -14,52 +14,21 @@ const AppHeader = () => {
 	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
 	const userLogo = document.querySelector("#userLogo");
-
-	const signIn = async () => {
-		SignInButton.hidden = true;
-		StartButton.hidden = false;
-		await request(`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`).then(
-			(data) => localStorage.setItem("token", data.request_token)
-		);
-		window.open(`https://www.themoviedb.org/authenticate/${localStorage.getItem("token")}`);
-	};
-
-	const start = async () => {
-		await postRequest(`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`, {
-			"request_token": localStorage.getItem("token"),
-		}).then((res) => localStorage.setItem("session_id", res.data.session_id));
-		await request(
-			`https://api.themoviedb.org/3/account?${process.env.REACT_APP_KEY}&session_id=${localStorage.getItem(
-				"session_id"
-			)}`
-		).then((res) => {
-			localStorage.setItem("username", res.username);
-			userLogo.innerHTML = localStorage.getItem("username").slice(0, 1).toUpperCase();
-			localStorage.setItem("id", res.id);
-		});
-		if (localStorage.getItem("username")) {
-			StartButton.hidden = true;
-			AccountButton.hidden = false;
-		}
-	};
+	const activeUser = useSelector((state) => state.session);
+	const signInDisplay = activeUser === "none" ? "block" : "none";
 
 	const signOut = () => {
-		localStorage.setItem("session_id", null);
-		localStorage.setItem("username", null);
+		localStorage.setItem("session_id", "null");
+		localStorage.setItem("username", "");
 		localStorage.setItem("id", null);
 		localStorage.setItem("token", null);
-		localStorage.setItem("watchlist", null);
-		SignInButton.hidden = false;
-		AccountButton.hidden = true;
+		dispatch(userLoggedOut());
 	};
 
 	const showMenu = () => {
-		Menu.hidden = false;
-		if (!localStorage.getItem("session_id")) {
-			start();
-		}
+		Menu.hidden ? (Menu.hidden = false) : (Menu.hidden = true);
 	};
-	const hideMenu = (e) => {
+	const hideMenu = () => {
 		Menu.hidden = true;
 	};
 
@@ -89,15 +58,21 @@ const AppHeader = () => {
 				</div>
 				<div className="loginBtn" id="btn">
 					<Link to="signin">
-						<button id="SignIn" type="button" className="btn" /* onClick={signIn} */>
+						<button id="SignIn" type="button" className="btn" style={{ "display": signInDisplay }}>
 							Sign in
 						</button>
 					</Link>
-					<button id="Start" type="button" className="btn" hidden onClick={start}>
-						Start
-					</button>
-					<div id="Account" type="button" hidden onClick={showMenu}>
-						<span id="userLogo"></span>
+					<div
+						id="Account"
+						type="button"
+						onClick={showMenu}
+						// style={{ "display": [activeUser] !== "none" ? "block" : "none" }}
+					>
+						<span id="userLogo">
+							{localStorage.getItem("username")
+								? localStorage.getItem("username").slice(0, 1).toUpperCase()
+								: null}
+						</span>
 					</div>
 				</div>
 			</div>

@@ -7,9 +7,13 @@ const session = (state = initialState, action) => {
 		case "USER_LOGGED_IN":
 			return {
 				...state,
-				activeUser: true,
+				activeUser: "user",
 			};
-
+		case "USER_LOGGED_OUT":
+			return {
+				...state,
+				activeUser: "none",
+			};
 		default:
 			return state;
 	}

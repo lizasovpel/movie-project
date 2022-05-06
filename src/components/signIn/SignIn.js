@@ -1,6 +1,7 @@
 import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
+import { userLoggedIn } from "../../actions";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
@@ -30,11 +31,12 @@ const SignIn = () => {
 				if (passwordValue !== accountExists.password) {
 					wrongPassword.hidden = false;
 				} else {
+					localStorage.setItem("username", loginValue);
 					await request(
 						`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
 					).then((data) => localStorage.setItem("token", data.request_token));
 					window.open(`https://www.themoviedb.org/authenticate/${localStorage.getItem("token")}`);
-					const postfunc = () => {
+					const postfunc = async () => {
 						clearTimeout(postfunc);
 						postRequest(
 							`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`,
@@ -43,33 +45,22 @@ const SignIn = () => {
 							}
 						)
 							.then((res) => {
+								console.log(res);
 								localStorage.setItem("session_id", res.data.session_id);
-								dispatch();
+								dispatch(userLoggedIn());
+								window.location.pathname = "/";
 							})
 							.catch((error) => setTimeout(postfunc, 500));
+						await request(
+							`https://api.themoviedb.org/3/account?${
+								process.env.REACT_APP_KEY
+							}&session_id=${localStorage.getItem("session_id")}`
+						).then((res) => {
+							localStorage.setItem("username", res.username);
+							localStorage.setItem("id", res.id);
+						});
 					};
 					setTimeout(postfunc, 1000);
-					// const start = async () => {
-					// 	await postRequest(
-					// 		`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`,
-					// 		{
-					// 			"request_token": localStorage.getItem("token"),
-					// 		}
-					// 	).then((res) => localStorage.setItem("session_id", res.data.session_id));
-					// 	await request(
-					// 		`https://api.themoviedb.org/3/account?${
-					// 			process.env.REACT_APP_KEY
-					// 		}&session_id=${localStorage.getItem("session_id")}`
-					// 	).then((res) => {
-					// 		localStorage.setItem("username", res.username);
-					// 		userLogo.innerHTML = localStorage.getItem("username").slice(0, 1).toUpperCase();
-					// 		localStorage.setItem("id", res.id);
-					// 	});
-					// 	if (localStorage.getItem("username")) {
-					// 		StartButton.hidden = true;
-					// 		AccountButton.hidden = false;
-					// 	}
-					// };
 				}
 			} else {
 				wrongLogin.hidden = false;
@@ -78,15 +69,6 @@ const SignIn = () => {
 			loginValue ? (loginHelp.hidden = true) : (loginHelp.hidden = false);
 			passwordValue ? (passwordHelp.hidden = true) : (passwordHelp.hidden = false);
 		}
-		// const token = await request(
-		// 	`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
-		// ).then((data) => {
-		// 	return data.request_token;
-		// });
-		// window.open(`https://www.themoviedb.org/authenticate/${token}`);
-		// postRequest(`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`, {
-		// 	"request_token": token,
-		// });
 	};
 
 	return (
