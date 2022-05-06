@@ -34,6 +34,12 @@ const movies = (state = initialState, action) => {
 				...state,
 				page: state.page + action.payload,
 			};
+		case "MAIN_PAGE":
+			return {
+				...state,
+				moviesLoadingStatus: "loading",
+				movies: [],
+			};
 
 		default:
 			return state;

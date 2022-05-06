@@ -131,3 +131,8 @@ export const moviesWatchlistPageChange = (number) => {
 		payload: number,
 	};
 };
+export const mainPage = () => {
+	return {
+		type: "MAIN_PAGE",
+	};
+};

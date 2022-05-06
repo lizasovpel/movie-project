@@ -2,7 +2,7 @@ import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWordChange, movieSearching } from "../../actions";
+import { searchWordChange, movieSearching, mainPage } from "../../actions";
 import search from "../../img/search.png";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 
@@ -66,7 +66,7 @@ const AppHeader = () => {
 	const dispatch = useDispatch();
 	return (
 		<header>
-			<Link to="/">
+			<Link to="/" onClick={() => dispatch(mainPage())}>
 				<h1>MOVIES</h1>
 			</Link>
 			<div className="right">

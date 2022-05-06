@@ -27,6 +27,11 @@ const genres = (state = initialState, action) => {
 				...state,
 				activeGenre: action.payload,
 			};
+		case "MAIN_PAGE":
+			return {
+				...state,
+				activeGenre: "all",
+			};
 
 		default:
 			return state;
