@@ -14,6 +14,7 @@ const AppHeader = () => {
 	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
 	const userLogo = document.querySelector("#userLogo");
+
 	const signIn = async () => {
 		SignInButton.hidden = true;
 		StartButton.hidden = false;
@@ -87,9 +88,11 @@ const AppHeader = () => {
 					</form>
 				</div>
 				<div className="loginBtn" id="btn">
-					<button id="SignIn" type="button" className="btn" onClick={signIn}>
-						Sign in
-					</button>
+					<Link to="signin">
+						<button id="SignIn" type="button" className="btn" /* onClick={signIn} */>
+							Sign in
+						</button>
+					</Link>
 					<button id="Start" type="button" className="btn" hidden onClick={start}>
 						Start
 					</button>

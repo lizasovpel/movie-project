@@ -1,26 +1,92 @@
 import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
+import { useDispatch } from "react-redux";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
+	const dispatch = useDispatch();
 	const axios = require("axios");
 
 	const onLogin = async (e) => {
 		e.preventDefault();
 		const loginInput = e.target.querySelector("#loginInput");
-		const login = loginInput.value;
+		const loginValue = loginInput.value;
 		const passwordInput = e.target.querySelector("#passwordInput");
-		const password = passwordInput.value;
-		const token = await request(
-			`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
-		).then((data) => {
-			return data.request_token;
-		});
-		window.open(`https://www.themoviedb.org/authenticate/${token}`);
-		postRequest(`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`, {
-			"request_token": token,
-		});
+		const passwordValue = passwordInput.value;
+		const users = JSON.parse(localStorage.getItem("users"));
+		const loginHelp = document.querySelector("#loginHelp");
+		const passwordHelp = document.querySelector("#passwordHelp");
+		const wrongLogin = document.querySelector("#wrongLogin");
+		const wrongPassword = document.querySelector("#wrongPassword");
+
+		if (loginValue && passwordValue) {
+			loginHelp.hidden = true;
+			passwordHelp.hidden = true;
+			wrongLogin.hidden = true;
+			wrongPassword.hidden = true;
+			const accountExists = users.find((user) => user.login === loginValue);
+			if (accountExists) {
+				if (passwordValue !== accountExists.password) {
+					wrongPassword.hidden = false;
+				} else {
+					await request(
+						`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
+					).then((data) => localStorage.setItem("token", data.request_token));
+					window.open(`https://www.themoviedb.org/authenticate/${localStorage.getItem("token")}`);
+					const postfunc = () => {
+						clearTimeout(postfunc);
+						postRequest(
+							`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`,
+							{
+								"request_token": localStorage.getItem("token"),
+							}
+						)
+							.then((res) => {
+								localStorage.setItem("session_id", res.data.session_id);
+								dispatch();
+							})
+							.catch((error) => setTimeout(postfunc, 500));
+					};
+					setTimeout(postfunc, 1000);
+					// const start = async () => {
+					// 	await postRequest(
+					// 		`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`,
+					// 		{
+					// 			"request_token": localStorage.getItem("token"),
+					// 		}
+					// 	).then((res) => localStorage.setItem("session_id", res.data.session_id));
+					// 	await request(
+					// 		`https://api.themoviedb.org/3/account?${
+					// 			process.env.REACT_APP_KEY
+					// 		}&session_id=${localStorage.getItem("session_id")}`
+					// 	).then((res) => {
+					// 		localStorage.setItem("username", res.username);
+					// 		userLogo.innerHTML = localStorage.getItem("username").slice(0, 1).toUpperCase();
+					// 		localStorage.setItem("id", res.id);
+					// 	});
+					// 	if (localStorage.getItem("username")) {
+					// 		StartButton.hidden = true;
+					// 		AccountButton.hidden = false;
+					// 	}
+					// };
+				}
+			} else {
+				wrongLogin.hidden = false;
+			}
+		} else {
+			loginValue ? (loginHelp.hidden = true) : (loginHelp.hidden = false);
+			passwordValue ? (passwordHelp.hidden = true) : (passwordHelp.hidden = false);
+		}
+		// const token = await request(
+		// 	`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
+		// ).then((data) => {
+		// 	return data.request_token;
+		// });
+		// window.open(`https://www.themoviedb.org/authenticate/${token}`);
+		// postRequest(`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`, {
+		// 	"request_token": token,
+		// });
 	};
 
 	return (
@@ -33,13 +99,22 @@ const SignIn = () => {
 							Login
 						</label>
 						<input id="loginInput" className="form-control" aria-describedby="emailHelp" />
+						<div id="loginHelp" className="form-text" hidden>
+							enter login
+						</div>
+						<div id="wrongLogin" className="form-text" hidden>
+							user doesn't exist
+						</div>
 					</div>
 					<div className="mb-3">
-						<label htmlFor="passwordInput" className="form-label">
-							Password
-						</label>
+						<label htmlFor="passwordInput" className="form-label"></label>
 						<input id="passwordInput" type="password" className="form-control" />
-						{/* <div id="loginHelp" className="form-text">error message</div> */}
+						<div id="passwordHelp" className="form-text" hidden>
+							enter password
+						</div>
+						<div id="wrongPassword" className="form-text" hidden>
+							wrong password
+						</div>
 					</div>
 					<button type="submit" className="btn">
 						Sign in

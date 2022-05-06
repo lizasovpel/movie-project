@@ -19,6 +19,19 @@ const Movies = () => {
 	const { request } = useHttpGet();
 
 	useEffect(() => {
+		localStorage.setItem(
+			"users",
+			JSON.stringify([
+				{
+					"login": "testuser070773",
+					"password": "Test070773User",
+				},
+				{
+					"login": "lizasovpel",
+					"password": "7242550inebuN",
+				},
+			])
+		);
 		dispatch(moviesFetching());
 		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`)
 			.then((data) => dispatch(moviesFetched(data)))
