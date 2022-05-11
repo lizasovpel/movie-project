@@ -14,8 +14,8 @@ const AppHeader = () => {
 	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
 	const userLogo = document.querySelector("#userLogo");
-	const activeUser = useSelector((state) => state.session);
-	const signInDisplay = activeUser === "none" ? "block" : "none";
+	const activeUser = useSelector((state) => state.session.activeUser);
+	const signInDisplay = activeUser === "noUser" ? ["block", "none"] : ["none", "table-cell"];
 
 	const signOut = () => {
 		localStorage.setItem("session_id", "null");
@@ -58,7 +58,7 @@ const AppHeader = () => {
 				</div>
 				<div className="loginBtn" id="btn">
 					<Link to="signin">
-						<button id="SignIn" type="button" className="btn" style={{ "display": signInDisplay }}>
+						<button id="SignIn" type="button" className="btn" style={{ "display": signInDisplay[0] }}>
 							Sign in
 						</button>
 					</Link>
@@ -66,6 +66,7 @@ const AppHeader = () => {
 						id="Account"
 						type="button"
 						onClick={showMenu}
+						style={{ "display": signInDisplay[1] }}
 						// style={{ "display": [activeUser] !== "none" ? "block" : "none" }}
 					>
 						<span id="userLogo">

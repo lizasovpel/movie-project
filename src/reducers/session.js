@@ -1,5 +1,5 @@
 const initialState = {
-	activeUser: false,
+	activeUser: "noUser",
 };
 
 const session = (state = initialState, action) => {
@@ -7,12 +7,12 @@ const session = (state = initialState, action) => {
 		case "USER_LOGGED_IN":
 			return {
 				...state,
-				activeUser: "user",
+				activeUser: "User",
 			};
 		case "USER_LOGGED_OUT":
 			return {
 				...state,
-				activeUser: "none",
+				activeUser: "noUser",
 			};
 		default:
 			return state;

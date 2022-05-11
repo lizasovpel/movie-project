@@ -21,7 +21,6 @@ const Pagination = () => {
 	}
 	const { page, totalPages } = useSelector((state) => state[storeName]);
 	const list = useSelector((state) => state[storeName][key]);
-	console.log(list);
 
 	const dispatch = useDispatch();
 
