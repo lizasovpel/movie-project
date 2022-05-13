@@ -53,16 +53,16 @@ const Movies = () => {
 				.catch(() => dispatch(moviesFetchingError()));
 		}
 	}, [searchWord]);
-	useEffect(() => {
-		if (movies.length === 0) {
-			dispatch(moviesFetching());
-			request(
-				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
-			)
-				.then((data) => dispatch(moviesFetched(data)))
-				.catch(() => dispatch(moviesFetchingError()));
-		}
-	}, [movies]);
+	// useEffect(() => {
+	// 	if (movies.length === 0) {
+	// 		dispatch(moviesFetching());
+	// 		request(
+	// 			`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+	// 		)
+	// 			.then((data) => dispatch(moviesFetched(data)))
+	// 			.catch(() => dispatch(moviesFetchingError()));
+	// 	}
+	// }, [movies]);
 
 	useEffect(() => {
 		dispatch(moviesFetching());

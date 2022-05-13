@@ -10,13 +10,21 @@ const AppHeader = () => {
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
 	const SignInButton = document.querySelector("#SignIn");
-	const StartButton = document.querySelector("#Start");
+	SignInButton.style.display = "block";
 	const AccountButton = document.querySelector("#Account");
+	AccountButton.style.display = "none";
 	const Menu = document.querySelector("#menu");
-	const userLogo = document.querySelector("#userLogo");
 	const activeUser = useSelector((state) => state.session.activeUser);
 	const signInDisplay = activeUser === "noUser" ? ["block", "none"] : ["none", "table-cell"];
-
+	useEffect(() => {
+		if (activeUser === "User") {
+			SignInButton.style.display = "none";
+			AccountButton.style.display = "table-cell";
+		} else {
+			SignInButton.style.display = "block";
+			AccountButton.style.display = "none";
+		}
+	}, [activeUser]);
 	const signOut = () => {
 		localStorage.setItem("session_id", "null");
 		localStorage.setItem("username", "");
@@ -58,7 +66,7 @@ const AppHeader = () => {
 				</div>
 				<div className="loginBtn" id="btn">
 					<Link to="signin">
-						<button id="SignIn" type="button" className="btn" style={{ "display": signInDisplay[0] }}>
+						<button id="SignIn" type="button" className="btn">
 							Sign in
 						</button>
 					</Link>

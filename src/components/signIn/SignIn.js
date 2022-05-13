@@ -7,7 +7,6 @@ const SignIn = () => {
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
 	const dispatch = useDispatch();
-	const axios = require("axios");
 
 	const onLogin = async (e) => {
 		e.preventDefault();
@@ -32,23 +31,21 @@ const SignIn = () => {
 					wrongPassword.hidden = false;
 				} else {
 					localStorage.setItem("username", loginValue);
+					localStorage.setItem("password", passwordValue);
 					await request(
 						`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
 					).then((data) => localStorage.setItem("token", data.request_token));
 					window.open(`https://www.themoviedb.org/authenticate/${localStorage.getItem("token")}`);
 					const postfunc = async () => {
 						clearTimeout(postfunc);
-						postRequest(
+						await postRequest(
 							`https://api.themoviedb.org/3/authentication/session/new?${process.env.REACT_APP_KEY}`,
 							{
 								"request_token": localStorage.getItem("token"),
 							}
 						)
 							.then((res) => {
-								console.log(res);
 								localStorage.setItem("session_id", res.data.session_id);
-								dispatch(userLoggedIn());
-								window.location.pathname = "/";
 							})
 							.catch((error) => setTimeout(postfunc, 500));
 						await request(
@@ -58,7 +55,9 @@ const SignIn = () => {
 						).then((res) => {
 							localStorage.setItem("username", res.username);
 							localStorage.setItem("id", res.id);
+							dispatch(userLoggedIn());
 						});
+						// .then(() => (window.location.pathname = "/"));
 					};
 					setTimeout(postfunc, 1000);
 				}
@@ -89,7 +88,9 @@ const SignIn = () => {
 						</div>
 					</div>
 					<div className="mb-3">
-						<label htmlFor="passwordInput" className="form-label"></label>
+						<label htmlFor="passwordInput" className="form-label">
+							Password
+						</label>
 						<input id="passwordInput" type="password" className="form-control" />
 						<div id="passwordHelp" className="form-text" hidden>
 							enter password
