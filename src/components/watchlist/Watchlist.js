@@ -7,7 +7,6 @@ import {
 	moviesWatchlistFetching,
 	moviesWatchlistFetched,
 	moviesWatchlistFetchingError,
-	moviesWatchlistTotalpagesFetched,
 } from "../../actions";
 import { useHttpGet } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
@@ -17,18 +16,18 @@ const Watchlist = () => {
 	const dispatch = useDispatch();
 	const { moviesWatchlist, moviesWatchlistLoadingStatus, page } = useSelector((state) => state.moviesWatchlist);
 
-	useEffect(() => {
-		dispatch(moviesWatchlistFetching());
-		request(
-			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/watchlist/movies?${
-				process.env.REACT_APP_KEY
-			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
-		)
-			.then((res) => dispatch(moviesWatchlistTotalpagesFetched(res.total_pages)))
-			.then((res) => dispatch(moviesWatchlistFetched(res.results)))
-			.catch(() => dispatch(moviesWatchlistFetchingError()));
-		// eslint-disable-next-line
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(moviesWatchlistFetching());
+	// 	request(
+	// 		`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/watchlist/movies?${
+	// 			process.env.REACT_APP_KEY
+	// 		}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
+	// 	)
+	// 		.then((res) => dispatch(moviesWatchlistTotalpagesFetched(res.total_pages)))
+	// 		.then((res) => dispatch(moviesWatchlistFetched(res.results)))
+	// 		.catch(() => dispatch(moviesWatchlistFetchingError()));
+	// 	// eslint-disable-next-line
+	// }, []);
 
 	useEffect(() => {
 		dispatch(moviesWatchlistFetching());

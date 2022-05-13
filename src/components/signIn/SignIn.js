@@ -2,11 +2,13 @@ import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../../actions";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const onLogin = async (e) => {
 		e.preventDefault();
@@ -52,12 +54,14 @@ const SignIn = () => {
 							`https://api.themoviedb.org/3/account?${
 								process.env.REACT_APP_KEY
 							}&session_id=${localStorage.getItem("session_id")}`
-						).then((res) => {
-							localStorage.setItem("username", res.username);
-							localStorage.setItem("id", res.id);
-							dispatch(userLoggedIn());
-						});
-						// .then(() => (window.location.pathname = "/"));
+						)
+							.then((res) => {
+								localStorage.setItem("username", res.username);
+								localStorage.setItem("id", res.id);
+								dispatch(userLoggedIn());
+							})
+							.then(() => navigate("/"))
+							.catch((error) => console.log(error));
 					};
 					setTimeout(postfunc, 1000);
 				}
