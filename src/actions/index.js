@@ -36,9 +36,9 @@ export const activeGenreChanged = (genre) => {
 		payload: genre,
 	};
 };
-export const pageChange = (number) => {
+export const moviesPageChange = (number) => {
 	return {
-		type: "PAGE_CHANGE",
+		type: "MOVIES_PAGE_CHANGE",
 		payload: number,
 	};
 };
@@ -100,5 +100,39 @@ export const reviewsFetchingError = () => {
 export const reviewsPageChange = () => {
 	return {
 		type: "REVIEWS_PAGE_CHANGE",
+	};
+};
+export const moviesWatchlistFetching = () => {
+	return {
+		type: "MOVIES_WATCHLIST_FETCHING",
+	};
+};
+export const moviesWatchlistFetched = (data) => {
+	return {
+		type: "MOVIES_WATCHLIST_FETCHED",
+		payload: data,
+	};
+};
+export const moviesWatchlistTotalpagesFetched = (data) => {
+	return {
+		type: "MOVIES_WATCHLIST_TOTALPAGES_FETCHED",
+		payload: data,
+	};
+};
+
+export const moviesWatchlistFetchingError = () => {
+	return {
+		type: "MOVIES_WATCHLIST_FETCHING_ERROR",
+	};
+};
+export const moviesWatchlistPageChange = (number) => {
+	return {
+		type: "MOVIES_WATCHLIST_PAGE_CHANGE",
+		payload: number,
+	};
+};
+export const mainPage = () => {
+	return {
+		type: "MAIN_PAGE",
 	};
 };

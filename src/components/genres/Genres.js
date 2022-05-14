@@ -1,14 +1,14 @@
 import "./Genres.sass";
-import { useHttp } from "../../hooks/http.hook";
+import { useHttpGet } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
 
 const Genres = () => {
-	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state);
+	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state.genres);
 	const dispatch = useDispatch();
-	const { request } = useHttp();
+	const { request } = useHttpGet();
 
 	useEffect(() => {
 		dispatch(genresFetching());
@@ -22,14 +22,17 @@ const Genres = () => {
 	if (genresLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
+	const activeStyle = { "backgroundColor": "white", "color": "black" };
 
 	const renderGenres = (genres) => {
 		return genres.map(({ id, name }) => {
 			return (
 				<button
 					key={id}
+					id={name}
 					type="button"
 					className="btn btn-outline-light"
+					style={activeGenre === id ? activeStyle : {}}
 					onClick={() => dispatch(activeGenreChanged(id))}
 				>
 					{name}

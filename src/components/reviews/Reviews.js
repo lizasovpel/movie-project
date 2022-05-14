@@ -1,13 +1,15 @@
 import "./Reviews.sass";
 import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
+import { useHttpGet } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import { reviewsFetching, reviewsFetched, reviewsFetchingError, reviewsPageChange } from "../../actions";
 import Spinner from "../spinner/Spinner";
 
 const Reviews = () => {
-	const { movieID, reviewsPage, reviews, reviewsLoadingStatus, totalReviewPages } = useSelector((state) => state);
-	const { request } = useHttp();
+	const { movieID } = useSelector((state) => state.movieInfo);
+	const { reviewsPage, reviews, reviewsLoadingStatus, totalReviewPages } = useSelector((state) => state.reviews);
+
+	const { request } = useHttpGet();
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(reviewsFetching());
