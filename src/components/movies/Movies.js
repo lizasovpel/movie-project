@@ -39,35 +39,41 @@ const Movies = () => {
 		// eslint-disable-next-line
 	}, []);
 	useEffect(() => {
+		console.log(searchWord);
 		if (searchWord) {
 			dispatch(moviesFetching());
 			request(`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));
 		} else {
-			dispatch(moviesFetching());
-			request(
-				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
-			)
-				.then((data) => dispatch(moviesFetched(data)))
-				.catch(() => dispatch(moviesFetchingError()));
+			if (movies.length !== 0) {
+				dispatch(moviesFetching());
+				request(
+					`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+				)
+					.then((data) => dispatch(moviesFetched(data)))
+					.catch(() => dispatch(moviesFetchingError()));
+			}
 		}
 	}, [searchWord]);
 
 	useEffect(() => {
-		dispatch(moviesFetching());
-		if (activeGenre === "all") {
-			request(
-				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
-			)
-				.then((data) => dispatch(moviesFetched(data)))
-				.catch(() => dispatch(moviesFetchingError()));
-		} else {
-			request(
-				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=${page}&with_genres=${activeGenre}`
-			)
-				.then((data) => dispatch(moviesFetched(data)))
-				.catch(() => dispatch(moviesFetchingError()));
+		if (page && page !== 1) {
+			console.log(page);
+			dispatch(moviesFetching());
+			if (activeGenre === "all") {
+				request(
+					`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+				)
+					.then((data) => dispatch(moviesFetched(data)))
+					.catch(() => dispatch(moviesFetchingError()));
+			} else {
+				request(
+					`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=${page}&with_genres=${activeGenre}`
+				)
+					.then((data) => dispatch(moviesFetched(data)))
+					.catch(() => dispatch(moviesFetchingError()));
+			}
 		}
 	}, [page]);
 

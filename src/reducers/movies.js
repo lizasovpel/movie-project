@@ -1,7 +1,6 @@
 const initialState = {
 	movies: [],
 	moviesLoadingStatus: "idle",
-	page: 1,
 	totalPages: 1,
 };
 
@@ -27,12 +26,12 @@ const movies = (state = initialState, action) => {
 		case "ACTIVE_GENRE_CHANGED":
 			return {
 				...state,
-				movies: [],
+				page: 1,
 			};
 		case "MOVIES_PAGE_CHANGE":
 			return {
 				...state,
-				page: state.page + action.payload,
+				page: state.page ? state.page + action.payload : 2,
 			};
 		case "MAIN_PAGE":
 			return {
