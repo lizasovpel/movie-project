@@ -4,38 +4,38 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	activeMovieChanged,
-	moviesWatchlistFetching,
-	moviesWatchlistFetched,
-	moviesWatchlistFetchingError,
-	moviesWatchlistTotalpagesFetched,
+	favoriteListFetching,
+	favoriteListFetched,
+	favoriteListFetchingError,
+	favoriteListTotalpagesFetched,
 } from "../../actions";
 import { useHttpGet } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
 
-const Watchlist = () => {
+const Favorite = () => {
 	const { request } = useHttpGet();
 	const dispatch = useDispatch();
-	const { moviesWatchlist, moviesWatchlistLoadingStatus, page } = useSelector((state) => state.moviesWatchlist);
+	const { favoriteList, favoriteListLoadingStatus, page } = useSelector((state) => state.favoriteList);
 
 	useEffect(() => {
-		dispatch(moviesWatchlistFetching());
+		dispatch(favoriteListFetching());
 		request(
-			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/watchlist/movies?${
+			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
 				process.env.REACT_APP_KEY
 			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
 		)
 			.then((res) => {
-				dispatch(moviesWatchlistTotalpagesFetched(res.total_pages));
+				dispatch(favoriteListTotalpagesFetched(res.total_pages));
 				return res;
 			})
-			.then((res) => dispatch(moviesWatchlistFetched(res.results)))
-			.catch(() => dispatch(moviesWatchlistFetchingError()));
+			.then((res) => dispatch(favoriteListFetched(res.results)))
+			.catch(() => dispatch(favoriteListFetchingError()));
 		// eslint-disable-next-line
 	}, [page]);
 
-	if (moviesWatchlistLoadingStatus === "loading") {
+	if (favoriteListLoadingStatus === "loading") {
 		return <Spinner />;
-	} else if (moviesWatchlistLoadingStatus === "error") {
+	} else if (favoriteListLoadingStatus === "error") {
 		return <h5 className="text-center mt-5">Loading Error</h5>;
 	}
 
@@ -64,14 +64,14 @@ const Watchlist = () => {
 			});
 		}
 	};
-	const elements = renderWatchlist(moviesWatchlist);
+	const elements = renderWatchlist(favoriteList);
 
 	return (
 		<div className="moviesContainer">
-			<h2>Watchlist</h2>
+			<h2>Favorite</h2>
 			<div className="container">{elements}</div>
 		</div>
 	);
 };
 
-export default Watchlist;
+export default Favorite;

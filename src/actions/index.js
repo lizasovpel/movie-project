@@ -125,12 +125,51 @@ export const moviesWatchlistFetchingError = () => {
 		type: "MOVIES_WATCHLIST_FETCHING_ERROR",
 	};
 };
-export const moviesWatchlistPageChange = (number) => {
+export const moviesWatchlistPageChange = () => {
 	return {
 		type: "MOVIES_WATCHLIST_PAGE_CHANGE",
-		payload: number,
 	};
 };
+export const moviesWatchlistPageOne = () => {
+	return {
+		type: "MOVIES_WATCHLIST_PAGE_ONE",
+	};
+};
+
+export const favoriteListFetching = () => {
+	return {
+		type: "FAVORITE_LIST_FETCHING",
+	};
+};
+export const favoriteListFetched = (data) => {
+	return {
+		type: "FAVORITE_LIST_FETCHED",
+		payload: data,
+	};
+};
+export const favoriteListTotalpagesFetched = (data) => {
+	return {
+		type: "FAVORITE_LIST_TOTALPAGES_FETCHED",
+		payload: data,
+	};
+};
+
+export const favoriteListFetchingError = () => {
+	return {
+		type: "FAVORITE_LIST_FETCHING_ERROR",
+	};
+};
+export const favoriteListPageChange = () => {
+	return {
+		type: "FAVORITE_LIST_PAGE_CHANGE",
+	};
+};
+export const favoriteListPageOne = () => {
+	return {
+		type: "FAVORITE_LIST_PAGE_ONE",
+	};
+};
+
 export const mainPage = () => {
 	return {
 		type: "MAIN_PAGE",

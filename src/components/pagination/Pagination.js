@@ -1,6 +1,6 @@
 import "./Pagination.sass";
 import { useDispatch, useSelector } from "react-redux";
-import { moviesPageChange, moviesWatchlistPageChange, reviewsPageChange } from "../../actions";
+import { moviesPageChange, moviesWatchlistPageChange, favoriteListPageChange } from "../../actions";
 const Pagination = () => {
 	let storeName;
 	let actionType;
@@ -15,6 +15,11 @@ const Pagination = () => {
 			storeName = "moviesWatchlist";
 			key = "moviesWatchlist";
 			actionType = moviesWatchlistPageChange;
+			break;
+		case "/favorite":
+			storeName = "favoriteList";
+			key = "favoriteList";
+			actionType = favoriteListPageChange;
 			break;
 		default:
 			storeName = "/movies";

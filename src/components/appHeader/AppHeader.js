@@ -1,7 +1,7 @@
 import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWordChange, movieSearching, mainPage } from "../../actions";
+import { searchWordChange, movieSearching, mainPage, moviesWatchlistPageOne, favoriteListPageOne } from "../../actions";
 import search from "../../img/search.png";
 import { useNavigate } from "react-router-dom";
 
@@ -9,8 +9,6 @@ const AppHeader = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const SignInButton = document.querySelector("#SignIn");
-	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
 	const username = localStorage.getItem("username");
 	let accountButtonDisplay;
@@ -79,10 +77,10 @@ const AppHeader = () => {
 				</div>
 			</div>
 			<ul id="menu" hidden onClick={(e) => hideMenu(e)}>
-				<Link to="/moviesWatchlist">
+				<Link to="/moviesWatchlist" onClick={() => dispatch(moviesWatchlistPageOne())}>
 					<li>Watchlist</li>
 				</Link>
-				<Link to="/">
+				<Link to="/favorite" onClick={() => dispatch(favoriteListPageOne())}>
 					<li>Favorite movies</li>
 				</Link>
 				<Link to="/">

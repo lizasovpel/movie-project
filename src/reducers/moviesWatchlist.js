@@ -2,7 +2,6 @@ const initialState = {
 	moviesWatchlist: [],
 	moviesWatchlistLoadingStatus: "idle",
 	page: 1,
-	totalPages: 1,
 };
 
 const moviesWatchlist = (state = initialState, action) => {
@@ -29,10 +28,16 @@ const moviesWatchlist = (state = initialState, action) => {
 				...state,
 				moviesWatchlistLoadingStatus: "error",
 			};
+		case "MOVIES_WATCHLIST_PAGE_ONE":
+			return {
+				...state,
+				page: 1,
+			};
+
 		case "MOVIES_WATCHLIST_PAGE_CHANGE":
 			return {
 				...state,
-				page: state.page + action.payload,
+				page: state.page + 1,
 			};
 
 		default:

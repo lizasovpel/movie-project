@@ -1,6 +1,6 @@
 import AppHeader from "../appHeader/AppHeader";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { MoviesPage, MoviePage, WatchlistPage, SignInPage } from "../pages";
+import { MoviesPage, MoviePage, WatchlistPage, SignInPage, FavoritePage } from "../pages";
 const App = () => {
 	return (
 		<Router>
@@ -10,6 +10,7 @@ const App = () => {
 					<Route path="/" element={<MoviesPage />} />
 					<Route path="/movieInfo" element={<MoviePage />} />
 					<Route path="/moviesWatchlist" element={<WatchlistPage />} />
+					<Route path="/favorite" element={<FavoritePage />}></Route>
 					<Route path="/signIn" element={<SignInPage />} />
 				</Routes>
 			</main>
