@@ -1,28 +1,36 @@
 import "./AppHeader.sass";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWordChange, movieSearching, mainPage, userLoggedOut } from "../../actions";
+import { searchWordChange, movieSearching, mainPage } from "../../actions";
 import search from "../../img/search.png";
-import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
+import { useNavigate } from "react-router-dom";
 
 const AppHeader = () => {
-	const { request } = useHttpGet();
-	const { postRequest } = useHttpsPost();
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const SignInButton = document.querySelector("#SignIn");
-	const StartButton = document.querySelector("#Start");
 	const AccountButton = document.querySelector("#Account");
 	const Menu = document.querySelector("#menu");
-	const userLogo = document.querySelector("#userLogo");
-	const activeUser = useSelector((state) => state.session.activeUser);
-	const signInDisplay = activeUser === "noUser" ? ["block", "none"] : ["none", "table-cell"];
+	const username = localStorage.getItem("username");
+	let accountButtonDisplay;
+	let SignInButtonDisplay;
+	// SignInButton.hidden = false;
+	if (username === "noUser" || !username) {
+		accountButtonDisplay = "none";
+		SignInButtonDisplay = "block";
+	} else {
+		accountButtonDisplay = "table-cell";
+		SignInButtonDisplay = "none";
+	}
 
 	const signOut = () => {
-		localStorage.setItem("session_id", "null");
-		localStorage.setItem("username", "");
-		localStorage.setItem("id", null);
-		localStorage.setItem("token", null);
-		dispatch(userLoggedOut());
+		localStorage.removeItem("session_id");
+		localStorage.setItem("username", "noUser");
+		localStorage.removeItem("password");
+		localStorage.removeItem("id");
+		localStorage.removeItem("token");
+		navigate("/");
 	};
 
 	const showMenu = () => {
@@ -33,7 +41,6 @@ const AppHeader = () => {
 	};
 
 	const { searchWord } = useSelector((state) => state);
-	const dispatch = useDispatch();
 	return (
 		<header>
 			<Link to="/" onClick={() => dispatch(mainPage())}>
@@ -57,12 +64,12 @@ const AppHeader = () => {
 					</form>
 				</div>
 				<div className="loginBtn" id="btn">
-					<Link to="signin">
-						<button id="SignIn" type="button" className="btn" style={{ "display": signInDisplay[0] }}>
+					<Link to="signin" style={{ "display": SignInButtonDisplay }}>
+						<button id="SignIn" type="button" className="btn">
 							Sign in
 						</button>
 					</Link>
-					<div id="Account" type="button" onClick={showMenu} style={{ "display": signInDisplay[1] }}>
+					<div id="Account" type="button" onClick={showMenu} style={{ "display": accountButtonDisplay }}>
 						<span id="userLogo">
 							{localStorage.getItem("username")
 								? localStorage.getItem("username").slice(0, 1).toUpperCase()
@@ -77,9 +84,6 @@ const AppHeader = () => {
 				</Link>
 				<Link to="/">
 					<li>Favorite movies</li>
-				</Link>
-				<Link to="/">
-					<li>Favorite TV Shows</li>
 				</Link>
 				<Link to="/">
 					<li onClick={signOut}>Sign out</li>

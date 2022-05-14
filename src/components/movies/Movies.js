@@ -39,7 +39,6 @@ const Movies = () => {
 		// eslint-disable-next-line
 	}, []);
 	useEffect(() => {
-		console.log(searchWord);
 		if (searchWord) {
 			dispatch(moviesFetching());
 			request(`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}`)

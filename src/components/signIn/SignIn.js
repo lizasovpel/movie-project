@@ -3,6 +3,7 @@ import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../../actions";
 import { useNavigate } from "react-router-dom";
+import { activeGenreChanged } from "../../actions";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
@@ -58,7 +59,8 @@ const SignIn = () => {
 							.then((res) => {
 								localStorage.setItem("username", res.username);
 								localStorage.setItem("id", res.id);
-								dispatch(userLoggedIn());
+								// dispatch(userLoggedIn);
+								dispatch(activeGenreChanged("all"));
 							})
 							.then(() => navigate("/"))
 							.catch((error) => console.log(error));

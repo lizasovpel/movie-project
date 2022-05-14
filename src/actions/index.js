@@ -136,13 +136,3 @@ export const mainPage = () => {
 		type: "MAIN_PAGE",
 	};
 };
-export const userLoggedIn = () => {
-	return {
-		type: "USER_LOGGED_IN",
-	};
-};
-export const userLoggedOut = () => {
-	return {
-		type: "USER_LOGGED_OUT",
-	};
-};
