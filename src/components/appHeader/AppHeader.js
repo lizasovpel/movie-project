@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { searchWordChange, movieSearching, mainPage, moviesWatchlistPageOne, favoriteListPageOne } from "../../actions";
 import search from "../../img/search.png";
 import { useNavigate } from "react-router-dom";
+import debounce from "debounce";
 
 const AppHeader = () => {
 	const dispatch = useDispatch();
@@ -13,7 +14,6 @@ const AppHeader = () => {
 	const username = localStorage.getItem("username");
 	let accountButtonDisplay;
 	let SignInButtonDisplay;
-	// SignInButton.hidden = false;
 	if (username === "noUser" || !username) {
 		accountButtonDisplay = "none";
 		SignInButtonDisplay = "block";
@@ -39,6 +39,9 @@ const AppHeader = () => {
 	};
 
 	const { searchWord } = useSelector((state) => state);
+	function func(e) {
+		dispatch(searchWordChange(e.target.value));
+	}
 	return (
 		<header>
 			<Link to="/" onClick={() => dispatch(mainPage())}>
@@ -53,7 +56,7 @@ const AppHeader = () => {
 								className="form-control"
 								placeholder="search..."
 								value={searchWord}
-								onChange={(e) => dispatch(searchWordChange(e.target.value))}
+								onChange={debounce(func, 1000)}
 							/>
 							<button className="input-group-text" onClick={() => dispatch(movieSearching())}>
 								<img src={search} alt="search" />

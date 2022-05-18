@@ -8,7 +8,6 @@ const search = (state = initialState, action) => {
 			return {
 				...state,
 				searchWord: action.payload,
-				page: 1,
 			};
 		case "SEARCH_WORD_NULL":
 			return {
