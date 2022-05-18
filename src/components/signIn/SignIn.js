@@ -1,7 +1,6 @@
 import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
-import { userLoggedIn } from "../../actions";
 import { useNavigate } from "react-router-dom";
 import { activeGenreChanged } from "../../actions";
 

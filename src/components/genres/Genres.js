@@ -3,7 +3,6 @@ import { useHttpGet } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged } from "../../actions";
-import Spinner from "../spinner/Spinner";
 
 const Genres = () => {
 	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state.genres);
@@ -33,7 +32,13 @@ const Genres = () => {
 					type="button"
 					className="btn btn-outline-light"
 					style={activeGenre === id ? activeStyle : {}}
-					onClick={() => dispatch(activeGenreChanged(id))}
+					onClick={(e) => {
+						if (activeGenre === id) {
+							dispatch(activeGenreChanged("all"));
+						} else {
+							dispatch(activeGenreChanged(id));
+						}
+					}}
 				>
 					{name}
 				</button>

@@ -1,7 +1,15 @@
 import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWordChange, movieSearching, mainPage, moviesWatchlistPageOne, favoriteListPageOne } from "../../actions";
+import {
+	searchWordChange,
+	movieSearching,
+	mainPage,
+	moviesWatchlistPageOne,
+	favoriteListPageOne,
+	moviesPageOne,
+	activeGenreChanged,
+} from "../../actions";
 import search from "../../img/search.png";
 import { useNavigate } from "react-router-dom";
 import debounce from "debounce";
@@ -40,6 +48,9 @@ const AppHeader = () => {
 
 	const { searchWord } = useSelector((state) => state);
 	function func(e) {
+		navigate("/");
+		dispatch(activeGenreChanged("all"));
+		dispatch(moviesPageOne());
 		dispatch(searchWordChange(e.target.value));
 	}
 	return (

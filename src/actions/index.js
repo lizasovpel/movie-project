@@ -42,6 +42,11 @@ export const moviesPageChange = (number) => {
 		payload: number,
 	};
 };
+export const moviesPageOne = () => {
+	return {
+		type: "MOVIES_PAGE_ONE",
+	};
+};
 export const searchWordChange = (word) => {
 	return {
 		type: "SEARCH_WORD_CHANGE",

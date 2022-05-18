@@ -2,7 +2,7 @@ import "./Movies.sass";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { moviesFetched, moviesFetching } from "../../actions";
+import { moviesFetched, moviesFetching, moviesPageOne } from "../../actions";
 import { moviesFetchingError } from "../../actions";
 import { activeMovieChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
@@ -81,6 +81,14 @@ const Movies = () => {
 			dispatch(moviesFetching());
 			request(
 				`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=${activeGenre}`
+			)
+				.then((data) => dispatch(moviesFetched(data)))
+				.catch(() => dispatch(moviesFetchingError()));
+		} else {
+			dispatch(moviesFetching());
+			dispatch(moviesPageOne());
+			request(
+				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
 			)
 				.then((data) => dispatch(moviesFetched(data)))
 				.catch(() => dispatch(moviesFetchingError()));

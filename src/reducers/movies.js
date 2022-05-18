@@ -33,6 +33,11 @@ const movies = (state = initialState, action) => {
 				...state,
 				page: state.page ? state.page + action.payload : 2,
 			};
+		case "MOVIES_PAGE_ONE":
+			return {
+				...state,
+				page: 1,
+			};
 		case "MAIN_PAGE":
 			return {
 				...state,
