@@ -56,7 +56,7 @@ const AppHeader = () => {
 								className="form-control"
 								placeholder="search..."
 								value={searchWord}
-								onChange={debounce(func, 1000)}
+								onChange={debounce(func, 500)}
 							/>
 							<button className="input-group-text" onClick={() => dispatch(movieSearching())}>
 								<img src={search} alt="search" />
