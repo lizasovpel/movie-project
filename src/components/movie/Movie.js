@@ -1,5 +1,7 @@
 import "./Movie.sass";
 import stars from "../../img/stars.png";
+import heart from "../../img/heart.png";
+import watchlist from "../../img/watchlist.png";
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -69,9 +71,21 @@ const Movie = () => {
 				<div className="top">
 					<div className="title">
 						<h2>{original_title}</h2>
-						<div className="vote">
-							<p>{vote_average}</p>
-							<img src={stars} alt="" />
+						<div className="options">
+							<div className="rate">
+								<p>{vote_average}</p>
+								<div id="rate" type="button">
+									<img src={stars} alt="star" />
+								</div>
+							</div>
+							<div className="actions">
+								<div id="favorite" type="button">
+									<img src={heart} alt="favorite" />
+								</div>
+								<div id="watchlist" type="button">
+									<img src={watchlist} alt="watchlist" />
+								</div>
+							</div>
 						</div>
 					</div>
 

@@ -31,15 +31,28 @@
             justify-content: space-between
             *
                 margin-bottom: 0
-            .vote
+            .options
                 display: flex
-                p
-                    font-size: 2rem
-            img
-                display: block
-                margin-top: 5px
-                padding-left: 20px
-                height: 2rem
+                justify-content: space-between
+                #favorite img, #watchlist img, #rate img
+                    height: 35px
+                    margin-top: 5px
+
+                .rate
+                    display: flex
+                    p
+                        font-size: 2rem
+                        display: inline
+                    img
+                        display: block
+                        margin-top: 5px
+                        padding-left: 5px
+                        height: 2rem
+                .actions
+                    display: flex
+                    >*
+                        margin-left: 10px
+
             @media all and (max-width: 800px)
                 display: flex
                 flex-direction: column
