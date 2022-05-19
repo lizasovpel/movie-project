@@ -12,6 +12,7 @@ const Movie = () => {
 	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
+	const username = localStorage.getItem("username");
 
 	useEffect(() => {
 		dispatch(movieFetching());
@@ -78,7 +79,7 @@ const Movie = () => {
 									<img src={stars} alt="star" />
 								</div>
 							</div>
-							<div className="actions">
+							<div className="actions" style={{ "display": username === "noUser" ? "none" : "flex" }}>
 								<div id="favorite" type="button">
 									<img src={heart} alt="favorite" />
 								</div>

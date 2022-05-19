@@ -36,7 +36,6 @@ const AppHeader = () => {
 		localStorage.removeItem("password");
 		localStorage.removeItem("id");
 		localStorage.removeItem("token");
-		navigate("/");
 	};
 
 	const showMenu = () => {
@@ -47,7 +46,7 @@ const AppHeader = () => {
 	};
 
 	const { searchWord } = useSelector((state) => state);
-	function func(e) {
+	function debFunc(e) {
 		navigate("/");
 		dispatch(activeGenreChanged("all"));
 		dispatch(moviesPageOne());
@@ -67,7 +66,7 @@ const AppHeader = () => {
 								className="form-control"
 								placeholder="search..."
 								value={searchWord}
-								onChange={debounce(func, 500)}
+								onChange={debounce(debFunc, 500)}
 							/>
 							<button className="input-group-text" onClick={() => dispatch(movieSearching())}>
 								<img src={search} alt="search" />
