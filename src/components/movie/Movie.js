@@ -2,7 +2,9 @@ import "./Movie.sass";
 import stars from "../../img/stars.png";
 import heart from "../../img/heart.png";
 import heart2 from "../../img/heart2.png";
-import watchlist from "../../img/watchlist.png";
+import watchlist1 from "../../img/watchlist1.png";
+import watchlist2 from "../../img/watchlist2.png";
+
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,52 +20,12 @@ const Movie = () => {
 
 	useEffect(() => {
 		dispatch(movieFetching());
-		(async function getCast() {
-			let data = await request(
-				`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`
-			);
-			dispatch(castFetched(data));
-		})();
-		(async function getMovieInfo() {
-			let data = await request(
-				`https://api.themoviedb.org/3/movie/${movieID}?${process.env.REACT_APP_KEY}&language=en-US`
-			);
-			dispatch(movieFetched(data));
-
-			if (username) {
-				async function getFav() {
-					let page = 1;
-					let total_pages;
-					let data = await request(
-						`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
-							process.env.REACT_APP_KEY
-						}&session_id=${localStorage.getItem(
-							"session_id"
-						)}&language=en-US&sort_by=created_at.asc&page=${page}`
-					);
-					let IDs = data.results.map((movie) => movie.id);
-					total_pages = data.total_pages;
-
-					while (page < total_pages) {
-						let res = await request(
-							`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
-								process.env.REACT_APP_KEY
-							}&session_id=${localStorage.getItem(
-								"session_id"
-							)}&language=en-US&sort_by=created_at.asc&page=${page + 1}`
-						);
-						let newIDs = res.results.map((movie) => movie.id);
-						IDs.push(...newIDs);
-
-						page++;
-						return IDs;
-					}
-				}
-				let IDs = await getFav();
-				let isFavorite = IDs.indexOf(movieID);
-				localStorage.setItem("isFavorite", isFavorite);
-			}
-		})();
+		request(
+			`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`
+		).then((data) => dispatch(castFetched(data)));
+		request(`https://api.themoviedb.org/3/movie/${movieID}?${process.env.REACT_APP_KEY}&language=en-US`).then(
+			(data) => dispatch(movieFetched(data))
+		);
 		// eslint-disable-next-line
 	}, []);
 
@@ -75,7 +37,7 @@ const Movie = () => {
 
 	if (movieInfo && cast) {
 		const {
-			original_title,
+			title,
 			backdrop_path,
 			poster_path,
 			overview,
@@ -102,10 +64,10 @@ const Movie = () => {
 			return allInfo.map((info) => (allInfo.indexOf(info) === allInfo.length - 1 ? info.name : info.name + ", "));
 		};
 
-		const getFavList = async () => {
+		async function getListOf(list) {
 			let page = 1;
 			let IDs = await request(
-				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
+				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
 					process.env.REACT_APP_KEY
 				}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
 			);
@@ -113,7 +75,7 @@ const Movie = () => {
 			IDs = IDs.results.map((movie) => movie.id);
 			while (page < total_pages) {
 				let res = await request(
-					`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
+					`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
 						process.env.REACT_APP_KEY
 					}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${
 						page + 1
@@ -121,59 +83,45 @@ const Movie = () => {
 				);
 				res = res.results.map((movie) => movie.id);
 				IDs.push(...res);
-				console.log(IDs);
 				page++;
 			}
-			const isFavorite = IDs.indexOf(movieID);
-			localStorage.setItem("isFavorite", isFavorite);
-		};
-
-		if (username) {
-			getFavList();
+			localStorage.setItem(`isIn${list}`, IDs.indexOf(movieID));
 		}
 
-		const addToFav = async () => {
+		getListOf("favorite");
+		getListOf("watchlist");
+
+		const removeFrom = async (list) => {
 			await postRequest(
-				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite?${
+				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}?${
 					process.env.REACT_APP_KEY
 				}&session_id=${localStorage.getItem("session_id")}`,
 				{
 					"media_type": "movie",
 					"media_id": movieID,
-					"favorite": true,
+					[list]: false,
 				}
-			).then((res) => console.log(res));
+			);
 		};
 
-		const removeFromFav = async () => {
+		const addTo = async (list) => {
 			await postRequest(
-				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite?${
+				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}?${
 					process.env.REACT_APP_KEY
 				}&session_id=${localStorage.getItem("session_id")}`,
 				{
 					"media_type": "movie",
 					"media_id": movieID,
-					"favorite": false,
+					[list]: true,
 				}
-			).then((res) => console.log(res));
+			);
 		};
-
-		let isFavorite = localStorage.getItem("isFavorite");
-		let heartDisplay;
-		let heart2Display;
-		if (isFavorite < 0) {
-			heartDisplay = "block";
-			heart2Display = "none";
-		} else {
-			heartDisplay = "none";
-			heart2Display = "block";
-		}
-
-		const changeDisplay = () => {
-			let heart1 = document.querySelector("#favorite1");
-			let heart2 = document.querySelector("#favorite2");
-			heart1.style.display === "block" ? (heart1.style.display = "none") : (heart1.style.display = "block");
-			heart2.style.display === "block" ? (heart2.style.display = "none") : (heart2.style.display = "block");
+		const changeDisplay = (list) => {
+			let item1 = document.querySelector(`#${list}1`);
+			console.log(item1);
+			let item2 = document.querySelector(`#${list}2`);
+			item1.style.display === "block" ? (item1.style.display = "none") : (item1.style.display = "block");
+			item2.style.display === "block" ? (item2.style.display = "none") : (item2.style.display = "block");
 		};
 
 		return (
@@ -187,7 +135,7 @@ const Movie = () => {
 
 				<div className="top">
 					<div className="title">
-						<h2>{original_title}</h2>
+						<h2>{title}</h2>
 						<div className="options">
 							<div className="rate">
 								<p>{vote_average}</p>
@@ -199,10 +147,10 @@ const Movie = () => {
 								<div
 									id="favorite1"
 									type="button"
-									style={{ "display": heartDisplay }}
+									style={{ "display": localStorage.getItem("isInfavorite") < 0 ? "block" : "none" }}
 									onClick={() => {
-										addToFav();
-										changeDisplay();
+										addTo("favorite");
+										changeDisplay("favorite");
 									}}
 								>
 									<img src={heart} alt="favorite" />
@@ -210,16 +158,35 @@ const Movie = () => {
 								<div
 									id="favorite2"
 									type="button"
-									style={{ "display": heart2Display }}
+									style={{ "display": localStorage.getItem("isInfavorite") < 0 ? "none" : "block" }}
 									onClick={() => {
-										removeFromFav();
-										changeDisplay();
+										removeFrom("favorite");
+										changeDisplay("favorite");
 									}}
 								>
 									<img src={heart2} alt="favorite" />
 								</div>
-								<div id="watchlist" type="button">
-									<img src={watchlist} alt="watchlist" />
+								<div
+									id="watchlist1"
+									type="button"
+									style={{ "display": localStorage.getItem("isInwatchlist") < 0 ? "block" : "none" }}
+									onClick={() => {
+										addTo("watchlist");
+										changeDisplay("watchlist");
+									}}
+								>
+									<img src={watchlist1} alt="watchlist" />
+								</div>
+								<div
+									id="watchlist2"
+									type="button"
+									style={{ "display": localStorage.getItem("isInwatchlist") < 0 ? "none" : "block" }}
+									onClick={() => {
+										removeFrom("watchlist");
+										changeDisplay("watchlist");
+									}}
+								>
+									<img src={watchlist2} alt="watchlist" />
 								</div>
 							</div>
 						</div>

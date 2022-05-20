@@ -22,7 +22,7 @@ const Watchlist = () => {
 		request(
 			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/watchlist/movies?${
 				process.env.REACT_APP_KEY
-			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
+			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.desc&page=${page}`
 		)
 			.then((res) => {
 				dispatch(moviesWatchlistTotalpagesFetched(res.total_pages));

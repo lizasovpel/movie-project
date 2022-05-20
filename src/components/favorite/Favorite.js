@@ -22,7 +22,7 @@ const Favorite = () => {
 		request(
 			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${
 				process.env.REACT_APP_KEY
-			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
+			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.desc&page=${page}`
 		)
 			.then((res) => {
 				dispatch(favoriteListTotalpagesFetched(res.total_pages));
