@@ -2,7 +2,7 @@ import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { activeGenreChanged, userLoggedIn } from "../../actions";
+import { activeGenreChanged, userLoggedIn, userWatchlist, userFavorite } from "../../actions";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
@@ -26,7 +26,6 @@ const SignIn = () => {
 			passwordHelp.hidden = true;
 			wrongPassword.hidden = true;
 			const accountExists = users.find((user) => user.login === loginValue);
-			console.log(accountExists);
 			if (!accountExists || passwordValue !== accountExists.password) {
 				wrongPassword.hidden = false;
 			} else {
@@ -45,7 +44,7 @@ const SignIn = () => {
 						.then((res) => {
 							localStorage.setItem("session_id", res.data.session_id);
 						})
-						.catch((error) => setTimeout(postfunc, 500));
+						.catch((error) => setTimeout(postfunc, 5000));
 					await request(
 						`https://api.themoviedb.org/3/account?${
 							process.env.REACT_APP_KEY
@@ -57,6 +56,38 @@ const SignIn = () => {
 						})
 						.then(() => navigate("/"))
 						.catch((error) => console.log(error));
+					async function getListOf(list) {
+						let page = 1;
+						let IDs = await request(
+							`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
+								process.env.REACT_APP_KEY
+							}&session_id=${localStorage.getItem(
+								"session_id"
+							)}&language=en-US&sort_by=created_at.asc&page=${page}`
+						);
+						const total_pages = IDs.total_pages;
+						IDs = IDs.results.map((movie) => movie.id);
+						while (page < total_pages) {
+							let res = await request(
+								`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
+									process.env.REACT_APP_KEY
+								}&session_id=${localStorage.getItem(
+									"session_id"
+								)}&language=en-US&sort_by=created_at.asc&page=${page + 1}`
+							);
+							res = res.results.map((movie) => movie.id);
+							IDs.push(...res);
+							page++;
+						}
+						if (list === "watchlist") {
+							dispatch(userWatchlist(IDs));
+						}
+						if (list === "favorite") {
+							dispatch(userFavorite(IDs));
+						}
+					}
+					getListOf("watchlist");
+					getListOf("favorite");
 				};
 				setTimeout(postfunc, 1000);
 			}
@@ -95,9 +126,6 @@ const SignIn = () => {
 					<button type="submit" className="btn">
 						Sign in
 					</button>
-					{/* <p>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </p> */}
 				</form>
 			</div>
 		</div>

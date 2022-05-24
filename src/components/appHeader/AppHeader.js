@@ -39,9 +39,11 @@ const AppHeader = () => {
 			.catch((error) => console.log(error));
 	};
 	const session_id = localStorage.getItem("session_id");
-	if (session_id) {
-		activeUser();
-	}
+	useEffect(() => {
+		if (session_id) {
+			activeUser();
+		}
+	}, []);
 
 	let accountButtonDisplay;
 	let SignInButtonDisplay;

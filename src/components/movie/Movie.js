@@ -16,7 +16,7 @@ const Movie = () => {
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
-	const username = localStorage.getItem("username");
+	const { username, watchlist, favorite } = useSelector((state) => state.userInfo);
 
 	useEffect(() => {
 		dispatch(movieFetching());
@@ -28,6 +28,12 @@ const Movie = () => {
 		);
 		// eslint-disable-next-line
 	}, []);
+	let isInFavorite;
+	let isInWatchlist;
+	if (username) {
+		isInFavorite = favorite.indexOf(movieID);
+		isInWatchlist = watchlist.indexOf(movieID);
+	}
 
 	if (movieLoadingStatus === "loading") {
 		return <Spinner />;
@@ -64,33 +70,6 @@ const Movie = () => {
 			return allInfo.map((info) => (allInfo.indexOf(info) === allInfo.length - 1 ? info.name : info.name + ", "));
 		};
 
-		async function getListOf(list) {
-			let page = 1;
-			let IDs = await request(
-				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
-					process.env.REACT_APP_KEY
-				}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
-			);
-			const total_pages = IDs.total_pages;
-			IDs = IDs.results.map((movie) => movie.id);
-			while (page < total_pages) {
-				let res = await request(
-					`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
-						process.env.REACT_APP_KEY
-					}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${
-						page + 1
-					}`
-				);
-				res = res.results.map((movie) => movie.id);
-				IDs.push(...res);
-				page++;
-			}
-			localStorage.setItem(`isIn${list}`, IDs.indexOf(movieID));
-		}
-
-		getListOf("favorite");
-		getListOf("watchlist");
-
 		const removeFrom = async (list) => {
 			await postRequest(
 				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}?${
@@ -118,7 +97,6 @@ const Movie = () => {
 		};
 		const changeDisplay = (list) => {
 			let item1 = document.querySelector(`#${list}1`);
-			console.log(item1);
 			let item2 = document.querySelector(`#${list}2`);
 			item1.style.display === "block" ? (item1.style.display = "none") : (item1.style.display = "block");
 			item2.style.display === "block" ? (item2.style.display = "none") : (item2.style.display = "block");
@@ -143,11 +121,11 @@ const Movie = () => {
 									<img src={stars} alt="star" />
 								</div>
 							</div>
-							<div className="actions" style={{ "display": username === "noUser" ? "none" : "flex" }}>
+							<div className="actions" style={{ "display": username ? "flex" : "none" }}>
 								<div
 									id="favorite1"
 									type="button"
-									style={{ "display": localStorage.getItem("isInfavorite") < 0 ? "block" : "none" }}
+									style={{ "display": isInFavorite < 0 ? "block" : "none" }}
 									onClick={() => {
 										addTo("favorite");
 										changeDisplay("favorite");
@@ -158,7 +136,7 @@ const Movie = () => {
 								<div
 									id="favorite2"
 									type="button"
-									style={{ "display": localStorage.getItem("isInfavorite") < 0 ? "none" : "block" }}
+									style={{ "display": isInFavorite < 0 ? "none" : "block" }}
 									onClick={() => {
 										removeFrom("favorite");
 										changeDisplay("favorite");
@@ -169,7 +147,7 @@ const Movie = () => {
 								<div
 									id="watchlist1"
 									type="button"
-									style={{ "display": localStorage.getItem("isInwatchlist") < 0 ? "block" : "none" }}
+									style={{ "display": isInWatchlist < 0 ? "block" : "none" }}
 									onClick={() => {
 										addTo("watchlist");
 										changeDisplay("watchlist");
@@ -180,7 +158,7 @@ const Movie = () => {
 								<div
 									id="watchlist2"
 									type="button"
-									style={{ "display": localStorage.getItem("isInwatchlist") < 0 ? "none" : "block" }}
+									style={{ "display": isInWatchlist < 0 ? "none" : "block" }}
 									onClick={() => {
 										removeFrom("watchlist");
 										changeDisplay("watchlist");

@@ -192,3 +192,15 @@ export const userLoggedOut = () => {
 		type: "USER_LOGGED_OUT",
 	};
 };
+export const userWatchlist = (list) => {
+	return {
+		type: "USER_WATCHLIST_LOADED",
+		payload: list,
+	};
+};
+export const userFavorite = (list) => {
+	return {
+		type: "USER_FAVORITE_LOADED",
+		payload: list,
+	};
+};

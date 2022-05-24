@@ -16,6 +16,16 @@ const userInfo = (state = initialState, action) => {
 				username: undefined,
 				userID: undefined,
 			};
+		case "USER_WATCHLIST_LOADED":
+			return {
+				...state,
+				watchlist: action.payload,
+			};
+		case "USER_FAVORITE_LOADED":
+			return {
+				...state,
+				favorite: action.payload,
+			};
 
 		default:
 			return state;
