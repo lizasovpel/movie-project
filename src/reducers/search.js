@@ -14,6 +14,11 @@ const search = (state = initialState, action) => {
 				...state,
 				searchWord: "",
 			};
+		case "MAIN_PAGE":
+			return {
+				...state,
+				searchWord: "",
+			};
 		default:
 			return state;
 	}

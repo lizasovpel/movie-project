@@ -3,7 +3,14 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHttpGet } from "../../hooks/http.hook";
-import { userLoggedIn, userFavorite, userWatchlist } from "../../actions";
+import {
+	userLoggedIn,
+	userFavorite,
+	userWatchlist,
+	moviesFetching,
+	moviesFetched,
+	moviesFetchingError,
+} from "../../actions";
 
 import {
 	searchWordChange,
@@ -15,7 +22,6 @@ import {
 	activeGenreChanged,
 	userLoggedOut,
 } from "../../actions";
-import search from "../../img/search.png";
 import { useNavigate } from "react-router-dom";
 import debounce from "debounce";
 
@@ -26,6 +32,8 @@ const AppHeader = () => {
 
 	const Menu = document.querySelector("#menu");
 	const { username } = useSelector((state) => state.userInfo);
+	const { searchWord } = useSelector((state) => state.search);
+	const searchInput = document.querySelector("#searchInput");
 	const activeUser = async () => {
 		await request(
 			`https://api.themoviedb.org/3/account?${process.env.REACT_APP_KEY}&session_id=${localStorage.getItem(
@@ -73,6 +81,9 @@ const AppHeader = () => {
 			getListOf("favorite");
 		}
 	}, []);
+	useEffect(() => {
+		searchInput.value = searchWord;
+	}, [searchWord]);
 
 	let accountButtonDisplay;
 	let SignInButtonDisplay;
@@ -96,16 +107,22 @@ const AppHeader = () => {
 		localStorage.removeItem("session_id");
 	};
 
-	const { searchWord } = useSelector((state) => state);
 	function debFunc(e) {
 		navigate("/");
 		dispatch(activeGenreChanged("all"));
 		dispatch(moviesPageOne());
 		dispatch(searchWordChange(e.target.value));
 	}
+	const toMainPage = () => {
+		dispatch(mainPage());
+		dispatch(moviesFetching());
+		request(`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=1`)
+			.then((data) => dispatch(moviesFetched(data)))
+			.catch(() => dispatch(moviesFetchingError()));
+	};
 	return (
 		<header>
-			<Link to="/" onClick={() => dispatch(mainPage())}>
+			<Link to="/" onClick={toMainPage}>
 				<h1>MOVIES</h1>
 			</Link>
 			<div className="right">
@@ -113,15 +130,12 @@ const AppHeader = () => {
 					<form className="d-flex">
 						<div className="input-group">
 							<input
+								id="searchInput"
 								type="search"
 								className="form-control"
 								placeholder="search..."
-								value={searchWord}
 								onChange={debounce(debFunc, 500)}
 							/>
-							<button className="input-group-text" onClick={() => dispatch(movieSearching())}>
-								<img src={search} alt="search" />
-							</button>
 						</div>
 					</form>
 				</div>
