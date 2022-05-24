@@ -2,8 +2,8 @@ import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useHttpsPost, useHttpGet } from "../../hooks/http.hook";
-import { userLoggedIn } from "../../actions";
+import { useHttpGet } from "../../hooks/http.hook";
+import { userLoggedIn, userFavorite, userWatchlist } from "../../actions";
 
 import {
 	searchWordChange,
@@ -22,7 +22,6 @@ import debounce from "debounce";
 const AppHeader = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const { postRequest } = useHttpsPost();
 	const { request } = useHttpGet();
 
 	const Menu = document.querySelector("#menu");
@@ -39,9 +38,39 @@ const AppHeader = () => {
 			.catch((error) => console.log(error));
 	};
 	const session_id = localStorage.getItem("session_id");
+	async function getListOf(list) {
+		let page = 1;
+		let IDs = await request(
+			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
+				process.env.REACT_APP_KEY
+			}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${page}`
+		);
+		const total_pages = IDs.total_pages;
+		IDs = IDs.results.map((movie) => movie.id);
+		while (page < total_pages) {
+			let res = await request(
+				`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/${list}/movies?${
+					process.env.REACT_APP_KEY
+				}&session_id=${localStorage.getItem("session_id")}&language=en-US&sort_by=created_at.asc&page=${
+					page + 1
+				}`
+			);
+			res = res.results.map((movie) => movie.id);
+			IDs.push(...res);
+			page++;
+		}
+		if (list === "watchlist") {
+			dispatch(userWatchlist(IDs));
+		}
+		if (list === "favorite") {
+			dispatch(userFavorite(IDs));
+		}
+	}
 	useEffect(() => {
 		if (session_id) {
 			activeUser();
+			getListOf("watchlist");
+			getListOf("favorite");
 		}
 	}, []);
 
