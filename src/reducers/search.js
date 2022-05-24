@@ -9,11 +9,11 @@ const search = (state = initialState, action) => {
 				...state,
 				searchWord: action.payload,
 			};
-		case "SEARCH_WORD_NULL":
-			return {
-				...state,
-				searchWord: "",
-			};
+		// case "SEARCH_WORD_NULL":
+		// 	return {
+		// 		...state,
+		// 		searchWord: "",
+		// 	};
 		case "MAIN_PAGE":
 			return {
 				...state,

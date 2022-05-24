@@ -1,14 +1,19 @@
 import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { activeGenreChanged, userLoggedIn, userWatchlist, userFavorite } from "../../actions";
+import { activeGenreChanged, userLoggedIn, userWatchlist, userFavorite, searchWordChange } from "../../actions";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		dispatch(searchWordChange(""));
+	}, []);
 
 	const onLogin = async (e) => {
 		e.preventDefault();
@@ -54,8 +59,8 @@ const SignIn = () => {
 							dispatch(userLoggedIn(res.username, res.id));
 							dispatch(activeGenreChanged("all"));
 						})
-						.then(() => navigate("/"))
 						.catch((error) => console.log(error));
+					navigate("/");
 					async function getListOf(list) {
 						let page = 1;
 						let IDs = await request(

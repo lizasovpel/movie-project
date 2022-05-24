@@ -8,6 +8,7 @@ import {
 	moviesWatchlistFetched,
 	moviesWatchlistFetchingError,
 	moviesWatchlistTotalpagesFetched,
+	searchWordChange,
 } from "../../actions";
 import { useHttpGet } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
@@ -16,6 +17,9 @@ const Watchlist = () => {
 	const { request } = useHttpGet();
 	const dispatch = useDispatch();
 	const { moviesWatchlist, moviesWatchlistLoadingStatus, page } = useSelector((state) => state.moviesWatchlist);
+	useEffect(() => {
+		dispatch(searchWordChange(""));
+	}, []);
 
 	useEffect(() => {
 		dispatch(moviesWatchlistFetching());

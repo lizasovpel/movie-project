@@ -9,7 +9,15 @@ import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
-import { movieFetching, movieFetched, movieFetchingError, castFetched } from "../../actions";
+import {
+	movieFetching,
+	movieFetched,
+	movieFetchingError,
+	castFetched,
+	searchWordChange,
+	userWatchlist,
+	userFavorite,
+} from "../../actions";
 
 const Movie = () => {
 	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
@@ -19,6 +27,7 @@ const Movie = () => {
 	const { username, watchlist, favorite } = useSelector((state) => state.userInfo);
 
 	useEffect(() => {
+		dispatch(searchWordChange(""));
 		dispatch(movieFetching());
 		request(
 			`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`
@@ -94,6 +103,17 @@ const Movie = () => {
 					[list]: true,
 				}
 			);
+			if (list === "watchlist") {
+				const newList = watchlist.unshift(movieID);
+
+				dispatch(userWatchlist(newList));
+			}
+			if (list === "favorite") {
+				const newList = favorite.unshift(movieID);
+				console.log(newList);
+
+				dispatch(userFavorite(newList));
+			}
 		};
 		const changeDisplay = (list) => {
 			let item1 = document.querySelector(`#${list}1`);

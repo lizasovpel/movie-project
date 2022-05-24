@@ -8,6 +8,7 @@ import {
 	favoriteListFetched,
 	favoriteListFetchingError,
 	favoriteListTotalpagesFetched,
+	searchWordChange,
 } from "../../actions";
 import { useHttpGet } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
@@ -18,6 +19,7 @@ const Favorite = () => {
 	const { favoriteList, favoriteListLoadingStatus, page } = useSelector((state) => state.favoriteList);
 
 	useEffect(() => {
+		dispatch(searchWordChange(""));
 		dispatch(favoriteListFetching());
 		request(
 			`https://api.themoviedb.org/3/account/${localStorage.getItem("id")}/favorite/movies?${

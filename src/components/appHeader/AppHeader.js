@@ -14,7 +14,6 @@ import {
 
 import {
 	searchWordChange,
-	movieSearching,
 	mainPage,
 	moviesWatchlistPageOne,
 	favoriteListPageOne,
@@ -33,7 +32,8 @@ const AppHeader = () => {
 	const Menu = document.querySelector("#menu");
 	const { username } = useSelector((state) => state.userInfo);
 	const { searchWord } = useSelector((state) => state.search);
-	const searchInput = document.querySelector("#searchInput");
+	const session_id = localStorage.getItem("session_id");
+
 	const activeUser = async () => {
 		await request(
 			`https://api.themoviedb.org/3/account?${process.env.REACT_APP_KEY}&session_id=${localStorage.getItem(
@@ -45,7 +45,6 @@ const AppHeader = () => {
 			})
 			.catch((error) => console.log(error));
 	};
-	const session_id = localStorage.getItem("session_id");
 	async function getListOf(list) {
 		let page = 1;
 		let IDs = await request(
@@ -82,7 +81,8 @@ const AppHeader = () => {
 		}
 	}, []);
 	useEffect(() => {
-		searchInput.value = searchWord;
+		const searchInput = document.querySelector("#searchInput");
+		searchInput.value = searchWord || "";
 	}, [searchWord]);
 
 	let accountButtonDisplay;
