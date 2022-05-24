@@ -90,6 +90,16 @@ const Movie = () => {
 					[list]: false,
 				}
 			);
+			if (list === "watchlist") {
+				const index = watchlist.indexOf(movieID);
+				watchlist.splice(index, 1);
+				dispatch(userWatchlist(watchlist));
+			}
+			if (list === "favorite") {
+				const index = favorite.indexOf(movieID);
+				favorite.splice(index, 1);
+				dispatch(userFavorite(favorite));
+			}
 		};
 
 		const addTo = async (list) => {
@@ -104,14 +114,11 @@ const Movie = () => {
 				}
 			);
 			if (list === "watchlist") {
-				const newList = watchlist.unshift(movieID);
-
+				const newList = [movieID].concat(watchlist);
 				dispatch(userWatchlist(newList));
 			}
 			if (list === "favorite") {
-				const newList = favorite.unshift(movieID);
-				console.log(newList);
-
+				const newList = [movieID].concat(favorite);
 				dispatch(userFavorite(newList));
 			}
 		};
