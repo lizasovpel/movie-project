@@ -2,7 +2,7 @@ import "./SignIn.sass";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { activeGenreChanged } from "../../actions";
+import { activeGenreChanged, userLoggedIn } from "../../actions";
 
 const SignIn = () => {
 	const { request } = useHttpGet();
@@ -30,8 +30,6 @@ const SignIn = () => {
 			if (!accountExists || passwordValue !== accountExists.password) {
 				wrongPassword.hidden = false;
 			} else {
-				localStorage.setItem("username", loginValue);
-				localStorage.setItem("password", passwordValue);
 				await request(
 					`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
 				).then((data) => localStorage.setItem("token", data.request_token));
@@ -54,9 +52,7 @@ const SignIn = () => {
 						}&session_id=${localStorage.getItem("session_id")}`
 					)
 						.then((res) => {
-							localStorage.setItem("username", res.username);
-							localStorage.setItem("id", res.id);
-							// dispatch(userLoggedIn);
+							dispatch(userLoggedIn(res.username, res.id));
 							dispatch(activeGenreChanged("all"));
 						})
 						.then(() => navigate("/"))

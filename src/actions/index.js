@@ -180,3 +180,15 @@ export const mainPage = () => {
 		type: "MAIN_PAGE",
 	};
 };
+
+export const userLoggedIn = (username, userID) => {
+	return {
+		type: "USER_LOGGED_IN",
+		payload: [username, userID],
+	};
+};
+export const userLoggedOut = () => {
+	return {
+		type: "USER_LOGGED_OUT",
+	};
+};

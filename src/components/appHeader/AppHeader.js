@@ -1,6 +1,7 @@
 import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import {
 	searchWordChange,
 	movieSearching,
@@ -9,6 +10,7 @@ import {
 	favoriteListPageOne,
 	moviesPageOne,
 	activeGenreChanged,
+	userLoggedOut,
 } from "../../actions";
 import search from "../../img/search.png";
 import { useNavigate } from "react-router-dom";
@@ -19,10 +21,11 @@ const AppHeader = () => {
 	const navigate = useNavigate();
 
 	const Menu = document.querySelector("#menu");
-	const username = localStorage.getItem("username");
+	const { username } = useSelector((state) => state.userInfo);
+
 	let accountButtonDisplay;
 	let SignInButtonDisplay;
-	if (username === "noUser" || !username) {
+	if (!username) {
 		accountButtonDisplay = "none";
 		SignInButtonDisplay = "block";
 	} else {
@@ -30,19 +33,16 @@ const AppHeader = () => {
 		SignInButtonDisplay = "none";
 	}
 
-	const signOut = () => {
-		localStorage.removeItem("session_id");
-		localStorage.setItem("username", "noUser");
-		localStorage.removeItem("password");
-		localStorage.removeItem("id");
-		localStorage.removeItem("token");
-	};
-
 	const showMenu = () => {
 		Menu.hidden ? (Menu.hidden = false) : (Menu.hidden = true);
 	};
 	const hideMenu = () => {
 		Menu.hidden = true;
+	};
+	const signOut = () => {
+		dispatch(userLoggedOut());
+		localStorage.removeItem("token");
+		localStorage.removeItem("session_id");
 	};
 
 	const { searchWord } = useSelector((state) => state);
@@ -81,11 +81,7 @@ const AppHeader = () => {
 						</button>
 					</Link>
 					<div id="Account" type="button" onClick={showMenu} style={{ "display": accountButtonDisplay }}>
-						<span id="userLogo">
-							{localStorage.getItem("username")
-								? localStorage.getItem("username").slice(0, 1).toUpperCase()
-								: null}
-						</span>
+						<span id="userLogo">{username ? username.slice(0, 1).toUpperCase() : null}</span>
 					</div>
 				</div>
 			</div>
