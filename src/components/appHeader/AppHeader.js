@@ -2,6 +2,9 @@ import "./AppHeader.sass";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useHttpsPost, useHttpGet } from "../../hooks/http.hook";
+import { userLoggedIn } from "../../actions";
+
 import {
 	searchWordChange,
 	movieSearching,
@@ -19,13 +22,30 @@ import debounce from "debounce";
 const AppHeader = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { postRequest } = useHttpsPost();
+	const { request } = useHttpGet();
 
 	const Menu = document.querySelector("#menu");
 	const { username } = useSelector((state) => state.userInfo);
+	const activeUser = async () => {
+		await request(
+			`https://api.themoviedb.org/3/account?${process.env.REACT_APP_KEY}&session_id=${localStorage.getItem(
+				"session_id"
+			)}`
+		)
+			.then((res) => {
+				dispatch(userLoggedIn(res.username, res.id));
+			})
+			.catch((error) => console.log(error));
+	};
+	const session_id = localStorage.getItem("session_id");
+	if (session_id) {
+		activeUser();
+	}
 
 	let accountButtonDisplay;
 	let SignInButtonDisplay;
-	if (!username) {
+	if (!session_id) {
 		accountButtonDisplay = "none";
 		SignInButtonDisplay = "block";
 	} else {
