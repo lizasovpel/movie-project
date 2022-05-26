@@ -8,7 +8,7 @@ const App = () => {
 			<main>
 				<Routes>
 					<Route path="/" element={<MoviesPage />} />
-					<Route path="/movieInfo" element={<MoviePage />} />
+					<Route path="/:id" element={<MoviePage />} />
 					<Route path="/moviesWatchlist" element={<WatchlistPage />} />
 					<Route path="/favorite" element={<FavoritePage />}></Route>
 					<Route path="/signIn" element={<SignInPage />} />

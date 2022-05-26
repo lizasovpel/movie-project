@@ -47,7 +47,7 @@ const Watchlist = () => {
 		if (watchlist) {
 			return watchlist.map(({ id, title, release_date, vote_average, poster_path }) => {
 				return (
-					<Link to="/movieInfo" key={id} onClick={() => dispatch(activeMovieChanged(id))}>
+					<Link to={{ pathname: `/${id}` }} key={id} onClick={() => dispatch(activeMovieChanged(id))}>
 						<div className="movieCard">
 							<div className="movieImage" data-proportion-h="2">
 								<img

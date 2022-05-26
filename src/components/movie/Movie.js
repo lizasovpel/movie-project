@@ -8,22 +8,16 @@ import watchlist2 from "../../img/watchlist2.png";
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
-import {
-	movieFetching,
-	movieFetched,
-	movieFetchingError,
-	castFetched,
-	searchWordChange,
-	userWatchlist,
-	userFavorite,
-} from "../../actions";
+import { movieFetching, movieFetched, castFetched, searchWordChange, userWatchlist, userFavorite } from "../../actions";
 
 const Movie = () => {
-	const { movieID, movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
+	const { movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 	const { postRequest } = useHttpsPost();
+	const movieID = +useParams().id;
 	const { username, watchlist, favorite } = useSelector((state) => state.userInfo);
 
 	useEffect(() => {
@@ -39,7 +33,7 @@ const Movie = () => {
 	}, []);
 	let isInFavorite;
 	let isInWatchlist;
-	if (username) {
+	if (username && favorite && watchlist) {
 		isInFavorite = favorite.indexOf(movieID);
 		isInWatchlist = watchlist.indexOf(movieID);
 	}

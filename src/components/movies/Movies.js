@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { moviesFetched, moviesFetching, moviesPageOne } from "../../actions";
 import { moviesFetchingError } from "../../actions";
-import { activeMovieChanged } from "../../actions";
 import Spinner from "../spinner/Spinner";
 import { useHttpGet } from "../../hooks/http.hook";
 
@@ -102,7 +101,7 @@ const Movies = () => {
 		if (movies.length !== 0) {
 			return movies.map(({ id, title, release_date, vote_average, poster_path }) => {
 				return (
-					<Link to="movieInfo" key={id} onClick={() => dispatch(activeMovieChanged(id))}>
+					<Link to={{ pathname: `${id}` }} key={id} /* onClick={() => dispatch(activeMovieChanged(id))} */>
 						<div className="movieCard">
 							<div className="movieImage" data-proportion-h="2">
 								<img
