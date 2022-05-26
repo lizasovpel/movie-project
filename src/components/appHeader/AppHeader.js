@@ -162,9 +162,9 @@ const AppHeader = () => {
 				<Link to="/favorite" onClick={() => dispatch(favoriteListPageOne())}>
 					<li>Favorite movies</li>
 				</Link>
-				<Link to="/">
+				<div>
 					<li onClick={signOut}>Sign out</li>
-				</Link>
+				</div>
 			</ul>
 		</header>
 	);
