@@ -87,6 +87,13 @@ const AppHeader = () => {
 
 	let accountButtonDisplay;
 	let SignInButtonDisplay;
+	document.addEventListener("click", (e) => {
+		const isMenu = e.composedPath().includes(Menu);
+		const isAccountButton = e.composedPath().includes(document.querySelector("#Account"));
+		if (!isMenu && !isAccountButton) {
+			document.querySelector("#menu").hidden = true;
+		}
+	});
 	if (!session_id) {
 		accountButtonDisplay = "none";
 		SignInButtonDisplay = "block";
@@ -94,13 +101,10 @@ const AppHeader = () => {
 		accountButtonDisplay = "table-cell";
 		SignInButtonDisplay = "none";
 	}
+	const toggleMenu = () => {
+		Menu.toggleAttribute("hidden");
+	};
 
-	const showMenu = () => {
-		Menu.hidden ? (Menu.hidden = false) : (Menu.hidden = true);
-	};
-	const hideMenu = () => {
-		Menu.hidden = true;
-	};
 	const signOut = () => {
 		dispatch(userLoggedOut());
 		localStorage.removeItem("token");
@@ -120,6 +124,7 @@ const AppHeader = () => {
 			.then((data) => dispatch(moviesFetched(data)))
 			.catch(() => dispatch(moviesFetchingError()));
 	};
+
 	return (
 		<header>
 			<Link to="/" onClick={toMainPage}>
@@ -145,12 +150,12 @@ const AppHeader = () => {
 							Sign in
 						</button>
 					</Link>
-					<div id="Account" type="button" onClick={showMenu} style={{ "display": accountButtonDisplay }}>
+					<div id="Account" type="button" onClick={toggleMenu} style={{ "display": accountButtonDisplay }}>
 						<span id="userLogo">{username ? username.slice(0, 1).toUpperCase() : null}</span>
 					</div>
 				</div>
 			</div>
-			<ul id="menu" hidden onClick={(e) => hideMenu(e)}>
+			<ul id="menu" hidden onClick={toggleMenu}>
 				<Link to="/moviesWatchlist" onClick={() => dispatch(moviesWatchlistPageOne())}>
 					<li>Watchlist</li>
 				</Link>
