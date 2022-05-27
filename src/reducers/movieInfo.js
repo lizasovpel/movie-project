@@ -1,5 +1,4 @@
 const initialState = {
-	movieID: "",
 	movieLoadingStatus: "idle",
 	movieInfo: null,
 	cast: [],
@@ -10,14 +9,8 @@ const movieInfo = (state = initialState, action) => {
 		case "ACTIVE_MOVIE_CHANGED":
 			return {
 				...state,
-				movieID: action.payload,
-				// reviews: [],
-				// searchWord: "",
 				movieInfo: null,
 				cast: [],
-				// genres: [],
-				// reviewsPage: 1,
-				// totalReviewPages: null,
 			};
 		case "MOVIE_FETCHING":
 			return {

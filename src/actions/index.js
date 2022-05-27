@@ -58,10 +58,9 @@ export const movieSearching = () => {
 		type: "MOVIES_FETCHING",
 	};
 };
-export const activeMovieChanged = (id) => {
+export const activeMovieChanged = () => {
 	return {
 		type: "ACTIVE_MOVIE_CHANGED",
-		payload: id,
 	};
 };
 export const movieFetching = () => {

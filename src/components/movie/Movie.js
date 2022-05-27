@@ -11,7 +11,15 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHttpGet, useHttpsPost } from "../../hooks/http.hook";
-import { movieFetching, movieFetched, castFetched, searchWordChange, userWatchlist, userFavorite } from "../../actions";
+import {
+	movieFetching,
+	movieFetched,
+	castFetched,
+	searchWordChange,
+	userWatchlist,
+	userFavorite,
+	activeMovieChanged,
+} from "../../actions";
 
 const Movie = () => {
 	const { movieInfo, cast, movieLoadingStatus } = useSelector((state) => state.movieInfo);
@@ -23,6 +31,7 @@ const Movie = () => {
 
 	useEffect(() => {
 		dispatch(searchWordChange(""));
+		dispatch(activeMovieChanged());
 		dispatch(movieFetching());
 		request(
 			`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`

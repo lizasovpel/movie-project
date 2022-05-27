@@ -6,6 +6,7 @@ import { moviesFetched, moviesFetching, moviesPageOne } from "../../actions";
 import { moviesFetchingError } from "../../actions";
 import Spinner from "../spinner/Spinner";
 import { useHttpGet } from "../../hooks/http.hook";
+import notFound from "../../img/notFound.png";
 
 const Movies = () => {
 	const { searchWord } = useSelector((state) => state.search);
@@ -105,11 +106,7 @@ const Movies = () => {
 						<div className="movieCard">
 							<div className="movieImage" data-proportion-h="2">
 								<img
-									src={
-										poster_path
-											? `https://image.tmdb.org/t/p/original${poster_path}`
-											: "https://freepikpsd.com/file/2019/10/image-not-found-png-4-Transparent-Images.png"
-									}
+									src={poster_path ? `https://image.tmdb.org/t/p/original${poster_path}` : notFound}
 									alt="poster"
 								/>
 								<div className="rating">{vote_average}</div>
