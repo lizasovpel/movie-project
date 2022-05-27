@@ -4,6 +4,7 @@ import heart from "../../img/heart.png";
 import heart2 from "../../img/heart2.png";
 import watchlist1 from "../../img/watchlist1.png";
 import watchlist2 from "../../img/watchlist2.png";
+import notFound from "../../img/notFound.png";
 
 import Spinner from "../spinner/Spinner";
 import { useEffect } from "react";
@@ -194,11 +195,7 @@ const Movie = () => {
 					<div className="details">
 						<div className="poster">
 							<img
-								src={
-									poster_path
-										? `https://image.tmdb.org/t/p/original${poster_path}`
-										: "https://freepikpsd.com/file/2019/10/image-not-found-png-4-Transparent-Images.png"
-								}
+								src={poster_path ? `https://image.tmdb.org/t/p/original${poster_path}` : notFound}
 								alt=""
 							/>
 						</div>
