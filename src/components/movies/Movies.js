@@ -50,6 +50,7 @@ const Movies = () => {
 				`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
 			)
 				.then((data) => dispatch(moviesFetched(data)))
+				.then((data) => console.log(data))
 				.catch(() => dispatch(moviesFetchingError()));
 		}
 	}, [searchWord]);
