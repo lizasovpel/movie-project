@@ -2,7 +2,13 @@ import "./Genres.sass";
 import { useHttpGet } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { genresFetching, genresFetched, genresFetchingError, activeGenreChanged } from "../../actions";
+import {
+	genresFetching,
+	genresFetched,
+	genresFetchingError,
+	activeGenreChanged,
+	searchWordChange,
+} from "../../actions";
 
 const Genres = () => {
 	const { genres, genresLoadingStatus, activeGenre } = useSelector((state) => state.genres);
@@ -32,7 +38,8 @@ const Genres = () => {
 					type="button"
 					className="btn btn-outline-light"
 					style={activeGenre === id ? activeStyle : {}}
-					onClick={(e) => {
+					onClick={() => {
+						dispatch(searchWordChange(""));
 						if (activeGenre === id) {
 							dispatch(activeGenreChanged("all"));
 						} else {

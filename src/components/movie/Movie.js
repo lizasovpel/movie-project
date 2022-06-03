@@ -28,17 +28,19 @@ const Movie = () => {
 	const { postRequest } = useHttpsPost();
 	const movieID = +useParams().id;
 	const { username, watchlist, favorite } = useSelector((state) => state.userInfo);
+	const loader = document.querySelector(".loading");
 
 	useEffect(() => {
+		loader.hidden = false;
 		dispatch(searchWordChange(""));
 		dispatch(activeMovieChanged());
 		dispatch(movieFetching());
 		request(
 			`https://api.themoviedb.org/3/movie/${movieID}/credits?${process.env.REACT_APP_KEY}&language=en-US`
 		).then((data) => dispatch(castFetched(data)));
-		request(`https://api.themoviedb.org/3/movie/${movieID}?${process.env.REACT_APP_KEY}&language=en-US`).then(
-			(data) => dispatch(movieFetched(data))
-		);
+		request(`https://api.themoviedb.org/3/movie/${movieID}?${process.env.REACT_APP_KEY}&language=en-US`)
+			.then((data) => dispatch(movieFetched(data)))
+			.then((loader.hidden = true));
 		// eslint-disable-next-line
 	}, []);
 	let isInFavorite;

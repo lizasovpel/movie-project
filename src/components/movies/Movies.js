@@ -18,6 +18,11 @@ const Movies = () => {
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 
+	const loader = document.querySelector(".loading");
+	useEffect(() => {
+		moviesLoadingStatus === "idle" ? (loader.hidden = true) : (loader.hidden = false);
+	}, [moviesLoadingStatus]);
+
 	useEffect(() => {
 		localStorage.setItem(
 			"users",
@@ -56,14 +61,22 @@ const Movies = () => {
 
 	useEffect(() => {
 		if (page && page !== 1) {
-			console.log(page);
 			dispatch(moviesFetching());
 			if (activeGenre === "all") {
-				request(
-					`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
-				)
-					.then((data) => dispatch(moviesFetched(data)))
-					.catch(() => dispatch(moviesFetchingError()));
+				if (searchWord) {
+					request(
+						`https://api.themoviedb.org/3/search/movie?${process.env.REACT_APP_KEY}&query=${searchWord}&page=${page}`
+					)
+						.then((data) => dispatch(moviesFetched(data)))
+						.catch(() => dispatch(moviesFetchingError()));
+					// console.log("a");
+				} else {
+					request(
+						`https://api.themoviedb.org/3/movie/popular?${process.env.REACT_APP_KEY}&language=en-US&page=${page}`
+					)
+						.then((data) => dispatch(moviesFetched(data)))
+						.catch(() => dispatch(moviesFetchingError()));
+				}
 			} else {
 				request(
 					`https://api.themoviedb.org/3/discover/movie?${process.env.REACT_APP_KEY}&language=en-US&sort_by=popularity.desc&page=${page}&with_genres=${activeGenre}`

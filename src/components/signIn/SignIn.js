@@ -10,6 +10,7 @@ const SignIn = () => {
 	const { postRequest } = useHttpsPost();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const loader = document.querySelector(".loading");
 
 	useEffect(() => {
 		dispatch(searchWordChange(""));
@@ -34,6 +35,7 @@ const SignIn = () => {
 			if (!accountExists || passwordValue !== accountExists.password) {
 				wrongPassword.hidden = false;
 			} else {
+				loader.hidden = false;
 				await request(
 					`https://api.themoviedb.org/3/authentication/token/new?${process.env.REACT_APP_KEY}`
 				).then((data) => localStorage.setItem("token", data.request_token));
@@ -58,9 +60,10 @@ const SignIn = () => {
 						.then((res) => {
 							dispatch(userLoggedIn(res.username, res.id));
 							dispatch(activeGenreChanged("all"));
+							loader.hidden = true;
+							navigate("/");
 						})
 						.catch((error) => console.log(error));
-					navigate("/");
 					async function getListOf(list) {
 						let page = 1;
 						let IDs = await request(
