@@ -1,5 +1,6 @@
 import "./Pagination.sass";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { moviesPageChange, moviesWatchlistPageChange, favoriteListPageChange } from "../../actions";
 const Pagination = () => {
 	let storeName;
@@ -24,10 +25,15 @@ const Pagination = () => {
 		default:
 			storeName = "/movies";
 	}
-	const { page, totalPages } = useSelector((state) => state[storeName]);
+	const { page, totalPages, loadingStatus } = useSelector((state) => state[storeName]);
+
 	const list = useSelector((state) => state[storeName][key]);
 
 	const dispatch = useDispatch();
+
+	// useEffect(() => {
+	// 	console.log("a");
+	// }, [loadingStatus]);
 
 	// const display = page === totalPages ? "none" : "flex";
 	const action = (a, b) => {

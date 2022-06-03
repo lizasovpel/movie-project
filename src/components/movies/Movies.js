@@ -18,11 +18,6 @@ const Movies = () => {
 	const dispatch = useDispatch();
 	const { request } = useHttpGet();
 
-	const loader = document.querySelector(".loading");
-	useEffect(() => {
-		moviesLoadingStatus === "idle" ? (loader.hidden = true) : (loader.hidden = false);
-	}, [moviesLoadingStatus]);
-
 	useEffect(() => {
 		localStorage.setItem(
 			"users",
