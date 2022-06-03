@@ -7,6 +7,8 @@ import { reviewsFetching, reviewsFetched, reviewsFetchingError, reviewsPageChang
 import Spinner from "../spinner/Spinner";
 
 const Reviews = () => {
+	var formatter = require("html-formatter");
+
 	const movieID = useParams().id;
 	const { reviewsPage, reviews, reviewsLoadingStatus, totalReviewPages } = useSelector((state) => state.reviews);
 
@@ -28,6 +30,7 @@ const Reviews = () => {
 	}
 
 	const renderReviewsList = (reviews) => {
+		console.log(reviews[2]);
 		return reviews.map(({ author, content, updated_at, url }) => {
 			return (
 				<div className="review" key={url}>
