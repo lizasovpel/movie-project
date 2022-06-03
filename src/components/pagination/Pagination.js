@@ -29,18 +29,46 @@ const Pagination = () => {
 
 	const dispatch = useDispatch();
 
-	const display = page === totalPages ? "none" : "flex";
+	// const display = page === totalPages ? "none" : "flex";
 	const action = (a, b) => {
 		return dispatch(a(b));
 	};
 
 	if (list && list.length !== 0) {
 		return (
-			<div className="button" style={{ "display": display }}>
-				<button type="button" className="btn btn-outline-danger" onClick={() => action(actionType, 1)}>
-					next page
-				</button>
-			</div>
+			<nav className="pagination" aria-label="Page navigation">
+				<ul className="pagination">
+					<li
+						className={page === 1 ? "page-item disabled" : "page-item"}
+						id="prev"
+						onClick={() => action(actionType, -1)}
+					>
+						<a className="page-link" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</li>
+					<li className="page-item disabled">
+						<a className="page-link" href="#">
+							{page}
+						</a>
+					</li>
+					<li
+						className={page === totalPages ? "page-item disabled" : "page-item"}
+						id="next"
+						onClick={() => action(actionType, 1)}
+					>
+						<a className="page-link" href="#" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			// <div className="button" style={{ "display": display }}>
+			// 	<button type="button" className="btn btn-outline-danger" onClick={() => action(actionType, 1)}>
+			// 		next page
+			// 	</button>
+			// </div>
 		);
 	} else {
 		return <></>;

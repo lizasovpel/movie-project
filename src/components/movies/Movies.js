@@ -60,7 +60,7 @@ const Movies = () => {
 	}, [searchWord]);
 
 	useEffect(() => {
-		if (page && page !== 1) {
+		if (page) {
 			dispatch(moviesFetching());
 			if (activeGenre === "all") {
 				if (searchWord) {
